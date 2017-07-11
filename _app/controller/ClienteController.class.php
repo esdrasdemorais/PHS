@@ -21,9 +21,18 @@ class ClienteController extends Controller
         View::Show(array());
     }
 
+    public function criarAction()
+    {
+        if (is_numeric($this->getParams('id'))) {
+            $this->clienteDAO = new ClienteDAO();
+            $this->cliente = $this->clienteDAO->listar($this->getParams('id'));
+        }
+        View::render('view/cliente/salvar', (array)$this->cliente);
+    }
+
     public function salvarAction()
     {
-        var_dump($post)
+        echo '<pre>';print_r($this->getRequest());die;//@todo
         $this->clienteDAO = new ClienteDAO();
         $this->clienteDAO->salvar($this->cliente);
     }

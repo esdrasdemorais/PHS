@@ -16,6 +16,11 @@ class View {
     private static $Values;
     private static $Template;
 
+    public static function render($view, $array = null)
+    {
+        include_once __DIR__ . '/../' . $view . '.php';
+    }
+    
     /**
      * <b>Carregar Template View:</b> informe o caminho e o nome do arquivo que deseja carregar como view.
      * Não precisa informar extenção. O arquivo deve ter o formato view<b>.tpl.html</b>
@@ -23,7 +28,7 @@ class View {
      */
     public static function Load($Template) {
         self::$Template = (string) $Template;
-        self::$Template = file_get_contents(self::$Template . '.tpl.php');
+        self::$Template = file_get_contents(__DIR__ . '/../' . self::$Template . '.tpl.php');
     }
 
     /**

@@ -1,3 +1,0 @@
-    <#google_analytics#>
-    </body>
-</html>

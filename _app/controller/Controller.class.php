@@ -13,7 +13,7 @@ abstract class Controller
     private $params;//@Todo
     private $title;        
 
-    public function Controller()
+    public function __construct()
     {
         $this->url = $_SERVER['REQUEST_URI'];//retorna url
 
@@ -28,6 +28,20 @@ abstract class Controller
         $this->actionName = strtolower(array_shift($this->params)) . 'Action';
     }
 
+    public function getRequest()
+    {
+        return $_POST;
+    }
+    
+    public function getParams() 
+    {
+        $request = array();
+        foreach ($this->params as $value) {
+            $request[array_shift($this->params)] = array_shift($this->params);
+        }
+        return array_filter($request);
+    }
+    
     public function indexAction()
     {
         $this->title = 'Terceiro Elemento';

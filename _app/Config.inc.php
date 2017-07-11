@@ -10,8 +10,7 @@ define('DBSA', 'wsphp');
 // AUTO LOAD DE CLASSES ####################
 function __autoload($Class)
 {
-    $cDir = ['pdo','helpers','model','dao','controller','view'];
-     var_dump($Class);
+    $cDir = ['pdo','helpers','model','dao','controller','view'];    
     $iDir = null;
 
     foreach ($cDir as $dirName):
