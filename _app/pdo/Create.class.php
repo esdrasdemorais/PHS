@@ -54,7 +54,7 @@ class Create extends Conn {
 
     //Cria a sintaxe da query para Prepared Statements
     private function getSyntax() {
-        $Fileds = implode(', ', array_keys($this->Dados));
+        $Fileds = implode(', ', array_keys($this->Dados));        
         $Places = ':' . implode(', :', array_keys($this->Dados));
         $this->Create = "INSERT INTO {$this->Tabela} ({$Fileds}) VALUES ({$Places})";
     }
@@ -63,6 +63,7 @@ class Create extends Conn {
     private function Execute() {
         $this->Connect();
         try {
+var_dump($this->Dados);exit;
             $this->Create->execute($this->Dados);
             $this->Result = $this->Conn->lastInsertId();
         } catch (PDOException $e) {

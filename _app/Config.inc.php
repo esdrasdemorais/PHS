@@ -3,9 +3,9 @@ define('HOME', 'http://localhost/phs');
 
 // CONFIGRAÇÕES DO SITE ####################
 define('HOST', 'localhost');
-define('USER', 'root');
-define('PASS', '');
-define('DBSA', 'wsphp');
+define('USER', 'phs');
+define('PASS', '123456');
+define('DBSA', 'phs');
 
 // AUTO LOAD DE CLASSES ####################
 function __autoload($Class)

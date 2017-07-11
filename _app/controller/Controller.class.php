@@ -31,15 +31,16 @@ abstract class Controller
     public function getRequest()
     {
         return $_POST;
+        //@todo var_dump(filter_input(INPUT_POST, 'var', FILTER_DEFAULT , FILTER_REQUIRE_ARRAY));
     }
     
     public function getParams() 
     {
-        $request = array();
+        $params = array();
         foreach ($this->params as $value) {
-            $request[array_shift($this->params)] = array_shift($this->params);
+            $params[array_shift($this->params)] = array_shift($this->params);
         }
-        return array_filter($request);
+        return array_filter($params);
     }
     
     public function indexAction()

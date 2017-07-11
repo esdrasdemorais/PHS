@@ -14,27 +14,24 @@ class ClienteController extends Controller
 
     public function indexAction()
     {
-        die('inicio da controller salvar');
-        //$this->listarAction();
-        //@TODO Login
         View::Load('view/cliente/salvar');
-        View::Show(array());
+        View::render('view/cliente/salvar');
     }
 
     public function criarAction()
     {
         if (is_numeric($this->getParams('id'))) {
             $this->clienteDAO = new ClienteDAO();
-            $this->cliente = $this->clienteDAO->listar($this->getParams('id'));
+            $this->cliente = $this->clienteDAO->listar($this->getParams('id'))[0];
         }
         View::render('view/cliente/salvar', (array)$this->cliente);
     }
 
     public function salvarAction()
     {
-        echo '<pre>';print_r($this->getRequest());die;//@todo
         $this->clienteDAO = new ClienteDAO();
-        $this->clienteDAO->salvar($this->cliente);
+        $this->cliente = $this->clienteDAO->setCliente($this->getRequest());
+        $this->clienteDAO->salvar($this->cliente);        
     }
 
     public function alterarAction()

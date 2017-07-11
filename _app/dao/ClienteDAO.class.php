@@ -47,41 +47,70 @@ class ClienteDAO
             $cliente->setEndereco($endereco->listar($cli['endereco_id'])[0]);   // Um para um         
             
             $arrCliente[] = $cliente;
-        }
+        }                
         
         return $arrCliente;
     }
 
-	public function salvar(Cliente $cliente)
-	{
-		$create = new Create();
-				
-		try{
-			$create->ExeCreate('cliente', (array)$cliente);
-			if(is_numeric($create->getResult())){
-				$cliente->setId($create->getResult());
-				return $cliente;
-			} else{
-				throw new Exception('Não foi possível realizar seu cadastro.');
-			}
-		} catch (Exception $ex) {
-			PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
-		}
-	}
+    private function setCliente($cli) 
+    {
+        $cliente = new Cliente();
+        $cliente->setId($cli['id']);
+        $cliente->setNome($cli['cli_nome']);
+        $cliente->setEmail($cli['cli_email']);
+        $cliente->setTelefone($cli['cli_telefone']);
+        
+        $this->setEndereco($cli['endereco_id']);
+    
+        return $cliente;
+    }
+    
+    private function setEndereco($endereco_id)
+    {
+        $endereco = new Endereco();
+        
+        if (is_numeric($cli['endereco_id'])) {
+            $enderecoDAO = new EnderecoDAO();
+            $endereco = new $enderecoDAO->listar($cli['endereco_id']);
+            $endereco = $endereco[0];
+            
+            $cliente->setEndereco($endereco);
+        }
+        
+        $cliente->setEndereco($cli['cli_endereco']);
+      //  $endereco->setGeoLocalizacao($cli['geolocalizacao']);
+    }
+    
+    public function salvar(Cliente $cliente)
+    {
+        $create = new Create();
 
-	public function deletar(Cliente $cliente)
-	{
-		$delete = new Delete();
+        try {
+            $create->ExeCreate('cliente', (array)$cliente);
+            if(is_numeric($create->getResult())){
+                $cliente->setId($create->getResult());
+                return $cliente;
+            } else{
+                    throw new Exception('Não foi possível realizar seu cadastro.');
+            }
+        } catch (Exception $ex) {
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
+        }
+    }
 
-		try {
-			$delete->ExeDelete('cliente', 'where id= :id', ':id='.$cliente->getId());
-			if($delete->getResult() === true){
-			  return "Cliente removido com sucesso!";      
-			} else {
-			  throw new Exception("Não foi possível remover o cliente.");
-			}  
-		} catch (Exception $ex) {
-			 PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
-		}	 
-	}
+    public function deletar(Cliente $cliente)
+    {
+        $delete = new Delete();
+
+        try {
+                $delete->ExeDelete('cliente', 'where id= :id', ':id='.$cliente->getId());
+                if($delete->getResult() === true){
+                  return "Cliente removido com sucesso!";      
+                } else {
+                  throw new Exception("Não foi possível remover o cliente.");
+                }  
+        } catch (Exception $ex) {
+                 PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
+        }	 
+    }
 }

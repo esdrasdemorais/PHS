@@ -1,8 +1,8 @@
 <?php
 
-namespace _app\DAO;
+//namespace _app\DAO;
 
-use _app\Model\Endereco as Endereco;
+//use _app\Model\Endereco as Endereco;
 
 /**
  * EnderecoDAO [ TIPO ]
@@ -22,12 +22,15 @@ class EnderecoDAO {
         }
     }
 
-    public function listar()
+    public function listar($id = null)
     {
         $arrEndereco = array();
 
-        $read = new Read();
-        $read->ExeRead('endereco');
+        if (is_numeric($id)) {
+            $read->ExeRead('endereco', 'id=:id', ':id=' . $id);
+        } else {
+            $read->ExeRead('endereco');
+        }
 
         foreach($read->getResult() as $end) {
             $arrEndereco[] = $this->setEndereco($end);
@@ -45,6 +48,7 @@ class EnderecoDAO {
         $endereco->setCidade($end['cidade']);
         $endereco->setEstado($end['estado']);
         $endereco->setCep($end['cep']);
+        $endereco->setNumero($numero);//@todo
 
         $readEndereco = new Read();
         $readEndereco->ExeRead('endereco', 'where id=:id', ':id = ' . $end['endereco_id']); 
@@ -57,13 +61,14 @@ class EnderecoDAO {
         $create = new Create();
 
         try{
-			$create->ExeCreate('endereco', (array)$endereco);
-			if(is_numeric($create->getResult())){
-			  $endereco->setId($create->getResult());
-			  return $endereco;
-			} else{
-			  throw new Exception('Não foi possível realizar seu cadastro.');
-			}
+            
+            $create->ExeCreate('endereco', (array)$endereco);
+            if(is_numeric($create->getResult())){
+              $endereco->setId($create->getResult());
+              return $endereco;
+            } else{
+              throw new Exception('Não foi possível realizar seu cadastro.');
+            }
         } catch (Exception $ex) {
             PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
         }

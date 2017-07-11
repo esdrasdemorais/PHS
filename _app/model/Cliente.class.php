@@ -1,6 +1,6 @@
 <?php
 
-namespace _app\Model;
+//namespace _app\Model;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,7 +17,7 @@ class Cliente {
     private $id;
     private $nome;
     private $email;
-    private $endereco;
+    private $endereco_id;
     private $telefone;
     
     function getId() {
@@ -33,7 +33,7 @@ class Cliente {
     }
 
     function getEndereco() {
-        return $this->endereco;
+        return $this->endereco_id;
     }
 
     function getTelefone() {
@@ -53,7 +53,7 @@ class Cliente {
     }
 
     function setEndereco(Endereco $endereco) {
-        $this->endereco = $endereco;
+        $this->endereco_id = $endereco->getId();
     }
 
     function setTelefone($telefone) {
