@@ -18,7 +18,7 @@ abstract class Controller
         $this->url = $_SERVER['REQUEST_URI'];//retorna url
 
         $this->baseUrl = substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], '/index.php'));//retorna a raiz
-
+        
         //$baseUrl = começa em PHS e vai até
         $queryString = substr($this->url, strpos($this->url, '/index.php') + strlen('/index.php'));
 
@@ -54,5 +54,11 @@ abstract class Controller
     public function redirect($url)
     {
         header('Location: ' . $url);
+    }
+    
+    public function getBaseUrl()
+    {
+        return $this->baseUrl;
+        
     }
 }

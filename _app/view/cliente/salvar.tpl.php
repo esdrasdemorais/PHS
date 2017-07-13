@@ -1,4 +1,4 @@
-<form method="post" title="CadastroCliente" action="/phs/index.php/cliente/salvar" name="cad_cliente" id="cad_cliente">
+<form method="post" title="CadastroCliente" action="#url#/index.php/cliente/salvar" name="cad_cliente" id="cad_cliente">
     <input type="hidden" name="id" value="#id#" />
     <label>Nome:</label>
     <input type="text" name="cli_nome" maxlength="170" value="#nome#" />

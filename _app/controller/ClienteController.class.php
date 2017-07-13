@@ -14,8 +14,9 @@ class ClienteController extends Controller
 
     public function indexAction()
     {
+        $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','nome'=>'','email'=>'','endereco'=>'','telefone'=>'');
         View::Load('view/cliente/salvar');
-        View::render('view/cliente/salvar');
+        View::render('view/cliente/salvar', $arrDados);
     }
 
     public function criarAction()
@@ -24,7 +25,7 @@ class ClienteController extends Controller
             $this->clienteDAO = new ClienteDAO();
             $this->cliente = $this->clienteDAO->listar($this->getParams('id'))[0];
         }
-        View::render('view/cliente/salvar', (array)$this->cliente);
+        View::render('view/cliente/salvar', array_push((array)$this->cliente, array('url'=>$this->getBaseUrl())));//array_merge((array)$this->cliente, array('url'=>$this->getBaseUrl())));
     }
 
     public function salvarAction()
@@ -50,5 +51,12 @@ class ClienteController extends Controller
     {
         $this->clienteDAO = new ClienteDAO();
         $this->clienteDAO->listar();
+    }
+    
+    public function escolherAction()
+    {
+        
+        
+        
     }
 }
