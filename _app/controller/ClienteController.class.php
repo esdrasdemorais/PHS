@@ -21,11 +21,14 @@ class ClienteController extends Controller
 
     public function criarAction()
     {
+        $arrCliente = array('id'=>'','nome'=>'','email'=>'','endereco'=>'','telefone'=>'');
         if (is_numeric($this->getParams('id'))) {
             $this->clienteDAO = new ClienteDAO();
             $this->cliente = $this->clienteDAO->listar($this->getParams('id'))[0];
+            $arrCliente = (array) $this->cliente;
         }
-        View::render('view/cliente/salvar', array_push((array)$this->cliente, array('url'=>$this->getBaseUrl())));//array_merge((array)$this->cliente, array('url'=>$this->getBaseUrl())));
+        $arrCliente = array_merge($arrCliente, array('url'=>$this->getBaseUrl()));
+        View::render('view/cliente/salvar', $arrCliente);
     }
 
     public function salvarAction()
@@ -55,8 +58,6 @@ class ClienteController extends Controller
     
     public function escolherAction()
     {
-        
-        
         
     }
 }
