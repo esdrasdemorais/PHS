@@ -5,7 +5,7 @@
  * Descrição
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
-class LoginTipo extends SplEnum
+final class LoginTipo
 {
     const __default = self::Cliente;
     

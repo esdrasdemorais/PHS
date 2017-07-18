@@ -5,7 +5,8 @@
  * Descrição
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
-class ServicoTipo extends SplEnum {
+final class ServicoTipo
+{
     const __default = self::Diarista;
     
     const Baba = 1;

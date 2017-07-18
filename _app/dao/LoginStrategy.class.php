@@ -6,6 +6,6 @@
  */
 interface LoginStrategy
 {
-    public function autenticar(Login $login);
-    public function deslogar(Login $login);
+    public function autenticar($login);
+    public function deslogar($login);
 }

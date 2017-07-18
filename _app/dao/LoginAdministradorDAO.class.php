@@ -6,16 +6,16 @@
  */
 class LoginAdministradorDAO implements LoginStrategy
 {
-    private function isLoged(LoginAdministrador $login)
+    private function isLoged(Login $login)
     {
     }
 
-    public function autenticar(LoginAdministrador $login)
+    public function autenticar(Login $login)
     {
         
     }
 
-    public function deslogar(LoginAdministrador $login)
+    public function deslogar(Login $login)
     {
         
     }

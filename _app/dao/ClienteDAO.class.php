@@ -18,10 +18,12 @@ class ClienteDAO extends Object
         $update = new Update();
 
         try {
-          $update->ExeUpdate("cliente", $this->toArray(cliente), 'where id=:id', 'id='.$cliente->getId());
-          //return $cliente;
+          $update->ExeUpdate("cliente", $this->toArray(cliente), 'where id=:id',
+            'id='.$cliente->getId());
+          return $cliente;
         } catch (Exception $ex) {  
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine()); 
         }
     }
     
@@ -46,7 +48,7 @@ class ClienteDAO extends Object
 
             $endereco = new EnderecoDAO();           
             
-            $cliente->setEndereco($endereco->listar($cli['endereco_id'])[0]);   // Um para um         
+            $cliente->setEndereco($endereco->listar($cli['endereco_id'])[0]);       
             
             $arrCliente[] = $cliente;
         }                

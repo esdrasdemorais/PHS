@@ -6,11 +6,16 @@
  */
 abstract class Login
 {
+    private $id;
     private $login;
     private $senha;
     private $ativo;
     private $dataUltimoAcesso;
     private $logado;
+    
+    public function getId() {
+        return $this->id;
+    }
     
     public function getLogin()
     {
@@ -35,6 +40,10 @@ abstract class Login
         return $this->logado;
     }
 
+    public function setId($id) {
+        $this->id = $id;
+    }
+    
     public function setLogin($login)
     {
         $this->login = $login;
