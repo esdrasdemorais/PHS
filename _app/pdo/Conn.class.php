@@ -25,7 +25,7 @@ abstract class Conn {
         try {
             if (self::$Connect == null):
                 $dsn = 'mysql:host=' . self::$Host . ';dbname=' . self::$Dbsa;
-                $options = [ PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8'];
+                $options = [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8'];
                 self::$Connect = new PDO($dsn, self::$User, self::$Pass, $options);
             endif;
         } catch (PDOException $e) {

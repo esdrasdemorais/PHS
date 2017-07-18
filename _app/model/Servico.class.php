@@ -5,7 +5,8 @@
  * Descrição
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
-abstract class Servico {
+abstract class Servico
+{
     protected $id;
     protected $data;
     protected $hora;

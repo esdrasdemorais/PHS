@@ -79,8 +79,10 @@ CREATE TABLE cliente_endereco (
 
 CREATE TABLE login (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    cliente_id INT UNSIGNED NOT NULL,
-    login VARCHAR(37) NOT NULL,
+    cliente_id INT UNSIGNED,
+    login VARCHAR(37) NOT NULL UNIQUE,
     senha VARCHAR(37) NOT NULL,
-    ativo CHAR(1) NOT NULL DEFAULT 1
+    ativo CHAR(1) NOT NULL DEFAULT 1,
+    data_ultimo_acesso DATETIME NOT NULL DEFAULT now(),
+    logado CHAR(1) NOT NULL DEFAULT 1
 );

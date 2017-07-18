@@ -63,7 +63,6 @@ class Create extends Conn {
     private function Execute() {
         $this->Connect();
         try {
-var_dump($this->Dados);exit;
             $this->Create->execute($this->Dados);
             $this->Result = $this->Conn->lastInsertId();
         } catch (PDOException $e) {

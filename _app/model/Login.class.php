@@ -1,28 +1,17 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of Login
  *
  * @author esdrassilva
  */
-class Login
+abstract class Login
 {
-    private $cliente_id;
     private $login;
     private $senha;
     private $ativo;
+    private $dataUltimoAcesso;
+    private $logado;
     
-    public function getCliente()
-    {
-        return $this->cliente_id;
-    }
-
     public function getLogin()
     {
         return $this->login;
@@ -32,10 +21,18 @@ class Login
     {
         return $this->senha;
     }
-
-    public function setCliente(Cliente $cliente)
+       
+    public function getAtivo()
     {
-        $this->cliente_id = $cliente->getId();
+        return $this->ativo;
+    }  
+   
+    public function getDataUltimoAcesso() {
+        return $this->dataUltimoAcesso;
+    }
+
+    public function getLogado() {
+        return $this->logado;
     }
 
     public function setLogin($login)
@@ -47,14 +44,17 @@ class Login
     {
         $this->senha = $senha;
     }
-    
-    public function getAtivo()
-    {
-        return $this->ativo;
-    }
 
     public function setAtivo($ativo)
     {
         $this->ativo = $ativo;
+    }
+
+    public function setDataUltimoAcesso($dataUltimoAcesso) {
+        $this->dataUltimoAcesso = $dataUltimoAcesso;
+    }
+
+    public function setLogado($logado) {
+        $this->logado = $logado;
     }
 }

@@ -18,7 +18,7 @@ class ClienteDAO extends Object
         $update = new Update();
 
         try {
-          $update->ExeUpdate("cliente", $this->toArray(cliente), 'where id=:id', ':id='.$cliente->getId());
+          $update->ExeUpdate("cliente", $this->toArray(cliente), 'where id=:id', 'id='.$cliente->getId());
           //return $cliente;
         } catch (Exception $ex) {  
             PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
@@ -90,7 +90,7 @@ class ClienteDAO extends Object
             if(is_numeric($create->getResult())){
                 $cliente->setId($create->getResult());
                 return $cliente;
-            } else{
+            } else {
                 throw new Exception('Não foi possível realizar seu cadastro.');
             }
         } catch (Exception $ex) {

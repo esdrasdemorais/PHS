@@ -1,6 +1,6 @@
 <?php
 
-namespace _app\DAO;
+namespace _app\dao;
 
 use _app\Model\Complemento as Complemento;
 
@@ -10,7 +10,7 @@ use _app\Model\Complemento as Complemento;
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
 class ComplementoDAO
-{  
+{
     public function alterar(Complemento $complemento)
     {
         $update = new Update();
