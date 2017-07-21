@@ -96,7 +96,8 @@ class ClienteDAO extends Object
                 throw new Exception('Não foi possível realizar seu cadastro.');
             }
         } catch (Exception $ex) {
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine());                                   
         }
     }
 
@@ -105,14 +106,24 @@ class ClienteDAO extends Object
         $delete = new Delete();
 
         try {
-            $delete->ExeDelete('cliente', 'where id= :id', ':id='.$cliente->getId());
+            $delete->ExeDelete('cliente', 'where id= :id', ':id='.
+                $cliente->getId());
             if($delete->getResult() === true){
               return "Cliente removido com sucesso!";      
             } else {
               throw new Exception("Não foi possível remover o cliente.");
             }  
         } catch (Exception $ex) {
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
-        }	 
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine()); 
+        } 
+    }
+    
+    public function searchByEmail($email)
+    {
+        $read = new Read();
+        $read->ExeRead('cliente', 'where email=:email', 'email=' . $email);
+        
+        return $read->getResult();
     }
 }

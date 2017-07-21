@@ -27,25 +27,29 @@ class LoginClienteDAO extends Object implements LoginStrategy
     {
         if (true === $this->isLoged($login)) {
             return true;
-        } else {
-            $read = new Read();
-            $read->ExeRead('login', 'where login = :login and senha = :senha', 
-            'login=' . $login->getLogin() . '&senha=' . sha1($login->getSenha())
-            );
-            if (true === count($read->getResult()) > 0) {
-                $login->setId($read->getResult()['id']);
-                $login->setLogado('1');
-                $login->setDataUltimoAcesso(date('Y-m-d H:i:s'));
-                $update = new Update();
-                $update->ExeUpdate('login', $this->toArray($login), 
-                    'where id=:id', 'id=' . $read->getResult()['id']);
-                return $login;
-            } else {
-                return false;
-            }
-        }
+        }  
+        $read = new Read();
+        $read->ExeRead('login', 'where login = :login and senha = :senha', 
+        'login=' . $login->getLogin() . '&senha=' . sha1($login->getSenha()));
+        if (true === count($read->getResult()) > 0) {
+            $login->setId($read->getResult()['id']);
+            $login->setLogado('1');
+            $login->setDataUltimoAcesso(date('Y-m-d H:i:s'));
+            $update = new Update();
+            $update->ExeUpdate('login', $this->toArray($login), 
+                'where id=:id', 'id=' . $read->getResult()['id']);
+            return $login;
+        }        
+        return false;
     }
 
+    public function checkEmail($email)
+    {
+        $clienteDAO = new ClienteDAO();
+        
+        return $clienteDAO->searchByEmail($email);
+    }
+    
     public function deslogar($login)
     {
         $login->setLogado('0');

@@ -15,10 +15,13 @@
         x-moz-errormessage="Informe a senha de acesso" />
     <br>
     
-    <article style="color:red;font-weight:bold;">#msg#<article>
+    <div style="color:red;font-weight:bold;">#msg#</div>
     
     <a href="#url#/index.php/login/recuperar/tipo/#tipo#/">Esqueci Minha Senha</a>
     <br>
     
     <input type="submit" name="ok" value="OK" />
+    <br>
+    
+    <h5>Não tem cadastro? <a href="#url#/index.php/#tipo#">Cadastre-se</a></h5>
 </form>

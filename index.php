@@ -11,8 +11,10 @@ $queryString = substr($url, strpos($url, '/index.php') + strlen('/index.php'));
 
 $params = array_filter(explode('/', $queryString));
 
-$controllerName = (true === empty($queryString)) ? 'DefaultController' : ucfirst(array_shift($params)) . 'Controller';
-$actionName = (true === empty($queryString)) ? 'indexAction' : (count($params) ? strtolower(array_shift($params)) : 'index') . 'Action';
+$controllerName = (true === empty($queryString) || 0 === count($params)) ? 
+	'DefaultController' : ucfirst(array_shift($params)) . 'Controller';
+$actionName = (true === empty($queryString) || 0 === count($params)) ? 
+	'indexAction' : (count($params) ? strtolower(array_shift($params)) : 'index') . 'Action';
 
 $controller = new $controllerName();
 $controller->$actionName();

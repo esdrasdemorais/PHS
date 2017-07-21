@@ -22,7 +22,7 @@ function __autoload($Class)
 
     if (!$iDir):
         #trigger_error("Não foi possível incluir {$Class}.class.php", E_USER_ERROR);
-        #echo "Não foi possível incluir {$Class}.class.php";
+        echo "Não foi possível incluir {$Class}.class.php";
         #die;
     endif;
 }
