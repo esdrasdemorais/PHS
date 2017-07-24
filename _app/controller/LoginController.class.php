@@ -36,7 +36,7 @@ class LoginController extends Controller
         $usuarioFacade = new UsuarioFacade();
         $login = $usuarioFacade->inicializar($this->loginModel);
         
-        if (false === $login instanceof $loginModelName) {
+        if (false === ($login instanceof $loginModelName)) {
             $login = $this->getRequest()['login'];      
             View::render('view/login/login', array('tipo'=>$this->tipo,'login'=>
                 $login,'senha'=>'','url'=>$this->getBaseUrl(),'id'=>'','msg'=>
@@ -61,9 +61,16 @@ class LoginController extends Controller
         $loginModelName = 'Login' . ucfirst($this->getParams()['tipo']);
         $this->loginModel = new $loginModelName();
         
-        $email = Check::Email($this->getRequest()['email']);
-        if (true === $email) {
-            $this->loginModel = $this->loginDAO->checkEmail($email);
+	$email = Check::Email($this->getRequest()['email']);
+	$this->loginModel = $this->loginDAO->checkEmail($email);
+	if (true === $email && ($this->loginModel instanceof $loginModelName) {
+	    $this->loginModel->setSenha($this->getRequest()['senha']);
+	    $this->loginDAO->alterar($loginModel);
+	    $msg = 'Senha salva com sucesso.';
+	    View::render('view/login/alterar', array('tipo'=>$this->tipo,
+		'email'=>$this->loginModel->getEmail(),'id'=>'','msg'=>'',
+		'senha'=>$this->loginModel->getSenha(),'url'=>
+		$this->getBaseUrl()));
         } else {
             $msg = 'Email Inválido ou não Cadastrado.';
             View::render('view/login/alterar', array('tipo'=>$this->tipo,
