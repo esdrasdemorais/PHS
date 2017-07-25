@@ -18,7 +18,7 @@ class ClienteDAO extends Object
         $update = new Update();
 
         try {
-          $update->ExeUpdate("cliente", $this->toArray(cliente), 'where id=:id',
+          $update->ExeUpdate("cliente", $this->toArray($cliente), 'where id=:id',
             'id='.$cliente->getId());
           return $cliente;
         } catch (Exception $ex) {  
@@ -79,9 +79,21 @@ class ClienteDAO extends Object
             $endereco = $endereco[0];
             
             $this->cliente->setEndereco($endereco);
-        } else {
-            $endereco->setGeoLocalizacao($arrCliente['geolocalizacao']);   
+            return;
         }
+        $arrEndereco = explode(",", $arrCliente['cli_endereco']);
+        $arrLogradouroBairro = explode("-", $arrEndereco[0]);
+        $endereco->setLogradouro($arrLogradouroBairro[0]);
+        $endereco->setBairro($arrLogradouroBairro[1]);
+
+        $arrCidadeEstado = explode("-", $arrEndereco[1]);
+        $endereco->setCidade($arrCidadeEstado[0]);
+        $endereco->setEstado($arrCidadeEstado[1]);
+
+        $endereco->setCep($arrEndereco[2]);
+        $endereco->setNumero($arrCliente['cli_numero']);
+        $endereco->setGeoLocalizacao($arrCliente['geolocalizacao']);
+        var_dump($endereco);die;
     }
     
     public function salvar(Cliente $cliente)

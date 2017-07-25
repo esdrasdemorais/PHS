@@ -59,6 +59,20 @@ class LoginClienteDAO extends Object implements LoginStrategy
         $update->ExeUpdate('login', $this->toArray($login), 
             'where id=:id', 'id=' . $login->getId());
     }
+    
+    public function atualizar($login)
+    {
+        $update = new Update();
+        
+        try {
+            $update->ExeUpdate("login", $this->toArray($login), 'where id=:id',
+                'id='.$login->getId());
+            return $login;
+        } catch (Exception $ex) {  
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine()); 
+        }
+    }
 }
 
 

@@ -33,7 +33,7 @@ class LoginController extends Controller
         $this->loginModel = new $loginModelName();
         $this->loginModel = $this->loginDAO->setLogin($this->getRequest());
 
-        $usuarioFacade = new UsuarioFacade();
+        $usuarioFacade = new UsuarioFacade($this->getParams()['tipo']);
         $login = $usuarioFacade->inicializar($this->loginModel);
         
         if (false === ($login instanceof $loginModelName)) {
@@ -63,7 +63,7 @@ class LoginController extends Controller
         
 	$email = Check::Email($this->getRequest()['email']);
 	$this->loginModel = $this->loginDAO->checkEmail($email);
-	if (true === $email && ($this->loginModel instanceof $loginModelName) {
+	if (true === $email && ($this->loginModel instanceof $loginModelName)) {
 	    $this->loginModel->setSenha($this->getRequest()['senha']);
 	    $this->loginDAO->alterar($loginModel);
 	    $msg = 'Senha salva com sucesso.';

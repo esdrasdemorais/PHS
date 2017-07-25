@@ -84,5 +84,7 @@ CREATE TABLE login (
     senha VARCHAR(37) NOT NULL,
     ativo CHAR(1) NOT NULL DEFAULT 1,
     data_ultimo_acesso DATETIME NOT NULL DEFAULT now(),
-    logado CHAR(1) NOT NULL DEFAULT 1
+    logado CHAR(1) NOT NULL DEFAULT 1,
+    cookie_hash VARCHAR(128),
+    tipo CHAR(1) NOT NULL DEFAULT 1
 );

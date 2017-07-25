@@ -6,7 +6,7 @@
  */
 class LoginCliente extends Login
 {
-    private $clienteId;
+    private $cliente_id;
     private $tipo = LoginTipo::CLIENTE;
     
     public function getTipo()
@@ -16,11 +16,11 @@ class LoginCliente extends Login
     
     public function getCliente()
     {
-        return $this->clienteId;
+        return $this->cliente_id;
     }
     
     public function setCliente(Cliente $cliente)
     {
-        $this->clienteId = $cliente->getId();
+        $this->cliente_id = $cliente->getId();
     }
 }

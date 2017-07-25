@@ -10,8 +10,9 @@ abstract class Login
     private $login;
     private $senha;
     private $ativo;
-    private $dataUltimoAcesso;
+    private $data_ultimo_acesso;
     private $logado;
+    private $cookie_hash;
     
     public function getId() {
         return $this->id;
@@ -33,11 +34,15 @@ abstract class Login
     }  
    
     public function getDataUltimoAcesso() {
-        return $this->dataUltimoAcesso;
+        return $this->data_ultimo_acesso;
     }
 
     public function getLogado() {
         return $this->logado;
+    }
+    
+    public function getCookieHash() {
+        return $this->cookie_hash;
     }
 
     public function setId($id) {
@@ -59,11 +64,18 @@ abstract class Login
         $this->ativo = $ativo;
     }
 
-    public function setDataUltimoAcesso($dataUltimoAcesso) {
-        $this->dataUltimoAcesso = $dataUltimoAcesso;
+    public function setDataUltimoAcesso($dataUltimoAcesso)
+    {
+        $this->data_ultimo_acesso = $dataUltimoAcesso;
     }
 
-    public function setLogado($logado) {
+    public function setLogado($logado)
+    {
         $this->logado = $logado;
+    }
+    
+    public function setCookieHash($cookieHash)
+    {
+        $this->cookie_hash = $cookieHash;
     }
 }
