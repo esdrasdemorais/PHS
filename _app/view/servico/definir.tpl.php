@@ -13,5 +13,8 @@
     <input type="search" name="ser_endereco" value="#endereco#" placeholder="rua, número, bairro, cidade, sigla estado" required title="Informe o endereço" x-moz-errormessage="Informe o endereço" />
     <input type="hidden" name="endereco_id" value="" />   
     <br>
-    <input type="submit" name="salvar" value="Salvar" />
+    <label>Valor:</label>
+    <input type="text" name="ser_valor" value="#valor#" readonly />  
+    <br>
+    <input type="submit" name="salvar" value="Salvar" />    
 </form>
