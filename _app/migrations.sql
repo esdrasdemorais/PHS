@@ -85,10 +85,12 @@ CREATE TABLE login (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     cliente_id INT UNSIGNED,
     login VARCHAR(37) NOT NULL UNIQUE,
-    senha VARCHAR(37) NOT NULL,
+    senha VARCHAR(40) NOT NULL,
     ativo CHAR(1) NOT NULL DEFAULT 1,
     data_ultimo_acesso DATETIME NOT NULL DEFAULT now(),
     logado CHAR(1) NOT NULL DEFAULT 1,
     cookie_hash VARCHAR(128),
     tipo CHAR(1) NOT NULL DEFAULT 1
 );
+
+CREATE UNIQUE INDEX un_ix_login ON login (login);

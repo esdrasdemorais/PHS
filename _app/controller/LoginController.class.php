@@ -19,6 +19,9 @@ class LoginController extends Controller
         
         $loginDAOName = 'Login' . ucfirst($this->tipo) . 'DAO';
         $this->loginDAO = new $loginDAOName();
+        
+        $loginModelName = 'Login' . ucfirst($this->tipo);
+        $this->loginModel = new $loginModelName();
     }
     
     public function indexAction()
@@ -35,13 +38,19 @@ class LoginController extends Controller
 
         $usuarioFacade = new UsuarioFacade($this->getParams()['tipo']);
         $login = $usuarioFacade->inicializar($this->loginModel);
+
+        if (true === $login) {
+            $this->redirect($this->getBaseUrl().'/index.php/servico');
+        }
         
         if (false === ($login instanceof $loginModelName)) {
-            $login = $this->getRequest()['login'];      
+            $login = $this->getRequest()['login'];
             View::render('view/login/login', array('tipo'=>$this->tipo,'login'=>
                 $login,'senha'=>'','url'=>$this->getBaseUrl(),'id'=>'','msg'=>
-                'Usuario ou senha não existe.')); 
+                'Usuario ou senha não existe.'));
         }
+        
+        $this->redirect($this->getBaseUrl().'/index.php/servico');
     }
     
     public function recuperarAction()
@@ -128,6 +137,27 @@ class LoginController extends Controller
             return 'Não foi possível enviar email. ' . $mail->ErrorInfo;
         }
         return 'Um email foi enviado com os procedimentos para recuperação.';
+    }
+    
+    public function salvarAction()
+    {
+        $clienteDAO = new ClienteDAO();
+        $cliente = $clienteDAO->searchByEmailAndId(
+            $this->getRequest()['email'], $this->getRequest()['id']);
+        if (false === $cliente) {
+            View::render('view/login/criar', array('tipo'=>$this->tipo,
+                'email'=>$this->getRequest()['email'],'url'=>$this->getBaseUrl()
+                ,'id'=>$this->getRequest()['email'],'msg'=>
+                'Não foi possível criar o login! Confirme os dados!'));
+            return;
+        }
+        $this->loginModel = $this->loginDAO->setLogin($this->getRequest());
+        $this->loginModel = $this->loginDAO->salvar($this->loginModel);
+        if ($this->loginModel->getId() > 0) {
+            View::render('view/login/login', array('tipo'=>$this->tipo,'login'=>
+                $this->loginModel->getLogin(),'senha'=>'','msg'=>'',
+                'url'=>$this->getBaseUrl(),'id'=>$this->loginModel->getId()));
+        }
     }
     
     public function sairAction()

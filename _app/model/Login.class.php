@@ -9,7 +9,7 @@ abstract class Login
     private $id;
     private $login;
     private $senha;
-    private $ativo;
+    private $ativo = '1';
     private $data_ultimo_acesso;
     private $logado;
     private $cookie_hash;

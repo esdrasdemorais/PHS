@@ -33,7 +33,7 @@ class ClienteDAO extends Object
                 
         $read = new Read();
         if (is_numeric($id)) {
-            $read->ExeRead('cliente', 'id=:id', ':id=' . $id);
+            $read->ExeRead('cliente', 'where id=:id', 'id=' . $id);
         } else {
             $read->ExeRead('cliente');
         }
@@ -43,15 +43,12 @@ class ClienteDAO extends Object
             $cliente->setId($cli['id']);
             $cliente->setNome($cli['nome']);
             $cliente->setEmail($cli['email']);
-            $cliente->setNumero($cli['numero']);
-            $cliente->setGeoLocalizacao($cli['geolocalizacao']);
-
             $endereco = new EnderecoDAO();           
             
             $cliente->setEndereco($endereco->listar($cli['endereco_id'])[0]);       
             
             $arrCliente[] = $cliente;
-        }                
+        }
         
         return $arrCliente;
     }
@@ -94,7 +91,7 @@ class ClienteDAO extends Object
         
         if (is_numeric($arrCliente['endereco_id'])) {
             $enderecoDAO = new EnderecoDAO();
-            $endereco = new $enderecoDAO->listar($arrCliente['endereco_id']);
+            $endereco = $enderecoDAO->listar($arrCliente['endereco_id']);
             $endereco = $endereco[0];
             
             $this->cliente->setEndereco($endereco);
@@ -132,15 +129,15 @@ class ClienteDAO extends Object
         try {
             $delete->ExeDelete('cliente', 'where id= :id', ':id='.
                 $cliente->getId());
-            if($delete->getResult() === true){
+            if ($delete->getResult() === true){
               return "Cliente removido com sucesso!";      
             } else {
               throw new Exception("Não foi possível remover o cliente.");
-            }  
+            } 
         } catch (Exception $ex) {
             PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
                 $ex->getLine()); 
-        } 
+        }
     }
     
     public function searchByEmail($email)
@@ -149,5 +146,13 @@ class ClienteDAO extends Object
         $read->ExeRead('cliente', 'where email=:email', 'email=' . $email);
         
         return $read->getResult();
+    }
+    
+    public function searchByEmailAndId($email, $id)
+    {
+        $read = new Read();
+        $read->ExeRead('cliente', 'WHERE email=:email AND id=:id', 
+            'email=' . $email . '&id=' . $id);
+        return count($read->getResult()) > 0 ? $read->getResult() : false;
     }
 }

@@ -28,9 +28,10 @@ class EnderecoDAO extends Object
     public function listar($id = null)
     {
         $arrEndereco = array();
-
+        $read = new Read();
+        
         if (is_numeric($id)) {
-            $read->ExeRead('endereco', 'id=:id', ':id=' . $id);
+            $read->ExeRead('endereco', 'where id=:id', 'id=' . $id);
         } else {
             $read->ExeRead('endereco');
         }

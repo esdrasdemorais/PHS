@@ -40,7 +40,13 @@ class ClienteController extends Controller
     {
         $this->clienteDAO = new ClienteDAO();
         $this->cliente = $this->clienteDAO->setCliente($this->getRequest());
-        $this->clienteDAO->salvar($this->cliente);        
+        $cliente = $this->clienteDAO->salvar($this->cliente);
+        if ($cliente->getId() > 0) {
+            $arrCliente = array('id'=>$cliente->getId(),'tipo'=>'cliente',
+                'email'=>$cliente->getEmail(),'url'=>$this->getBaseUrl(),
+                'login'=>'','senha'=>'','msg'=>'');
+            View::render('view/login/criar', $arrCliente);
+        }
     }
 
     public function alterarAction()
