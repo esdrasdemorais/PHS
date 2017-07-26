@@ -18,10 +18,12 @@ CREATE TABLE endereco (
     bairro VARCHAR(100) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
     estado CHAR(2) NOT NULL,
-    cep CHAR(8) NOT NULL,
+    cep CHAR(8),
     numero VARCHAR(10) NOT NULL,
-    geoLocalizacao TEXT NOT NULL
+    geoLocalizacao VARCHAR(77) NOT NULL
 );
+
+CREATE UNIQUE INDEX un_ix_endereco ON endereco (cep, numero, geoLocalizacao); 
 
 CREATE TABLE cliente (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -30,6 +32,8 @@ CREATE TABLE cliente (
     endereco_id INT NOT NULL,
     telefone VARCHAR(20) NOT NULL
 );
+
+CREATE UNIQUE INDEX un_ix_cliente ON cliente (email);
 
 CREATE TABLE servico (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -20,45 +20,61 @@
     <br>
     <label>Endereço:</label>
     <input type="search" name="cli_endereco" id="endereco" value="#endereco#" 
-        placeholder="cep rua, número bairro cidade sigla estado" required 
+        placeholder="rua, número, bairro, cidade, sigla estado, cep" required 
         title="Informe o endereço" x-moz-errormessage="Informe o endereço" />
-    <div id="error_place"></div>
-    <input type="hidden" name="endereco_id" value="" />
-    <input type="hidden" name="geolocalizacao" value="" />
-    <!--TODO -->
+    <section id="place" 
+        style="min-width:280px;display:none;border:1px solid #000;cursor:pointer;
+        text-decoration:underline">
+    </section>
+    <input type="hidden" name="endereco_id" id="endereco_id" value="" />
+    <input type="hidden" name="geolocalizacao" id="geolocalizacao" value="" />
     <br>
     <input type="submit" name="salvar" value="Salvar" />
 </form>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#endereco').keyup(function() {
-        if (this.value.length >= 8) {
-            $(document).load(
-                'https://maps.googleapis.com/maps/api/geocode/json?address=' +
-                $('#endereco').val().replace(/ /g, '+') + '&language=pt-BR' +
-                '&components=country:BR&location_type=ROOFTOP' +
-                '&result_type=street_address&sensor=false' +
-                '&key=AIzaSyB0SIDPIWaoL9FtcF-STdfy_1WFXKjlTuU',
-                function(response, status, xhr) {
-                    if (status == "error") {
-                        var msg = "CEP inválido ou não localizado.";
-                        $("#error_place").html(msg + xhr.status + " " + 
-                            xhr.statusText);
-                    } else {
-                        var json = JSON.parse(response);
-                        $('#error_place').html(json.results[0].formatted_address);
-                        //$('#endereco').val(json.results[0].formatted_address);
+
+$('#endereco').keyup(function() {
+    if (this.value.length >= 8) {
+        $(document).load(
+            'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+            $('#endereco').val().replace(/ /g, '+') + '&language=pt-BR' +
+            '&components=country:BR&location_type=ROOFTOP' +
+            '&result_type=street_address&sensor=false' +
+            '&key=AIzaSyB0SIDPIWaoL9FtcF-STdfy_1WFXKjlTuU',
+            function(response, status, xhr) {
+                if (status === "error") {
+                    var msg = "Endereço inválido ou não localizado.";
+                    $("#place").html(msg + xhr.status + " " + xhr.statusText);
+                } else {
+                    var json = jQuery.parseJSON(response);
+                    $('#place').html(json.results[0].formatted_address);
+                    if(isNaN(json.results[0].address_components[0].long_name)) {
+                        $('#place').html("Endereço não localizado. " +
+                            "Informe o número do endereço.");
+                        $('#endereco').focus();
                     }
+                    $("#geolocalizacao").val(
+                        json.results[0].geometry.location.lat + ',' +
+                        json.results[0].geometry.location.lng
+                    );
                 }
-            );
-            /*request = $.getJSON(
-                'https://maps.googleapis.com/maps/api/geocode/json?address=' +
-                $('#endereco').val().replace(/ /g, '+') + '&language=pt-BR' +
-                '&components=country:BR&location_type=ROOFTOP' +
-                '&result_type=street_address&sensor=false' +
-                '&key=AIzaSyB0SIDPIWaoL9FtcF-STdfy_1WFXKjlTuU');
-            alert(eval(request));*/
-        }
+                $('#place').css('display','inline');
+            }
+        );
+    }
+    
+    $("#place").click(function() {
+        $("#endereco").val($("#place").html());
+        $.getJSON(
+            '#url#/index.php/endereco/buscar/endereco/' +
+            $('#endereco').val().replace(/ /g, '+') + '/geo/' + 
+            $("#geolocalizacao").val(),
+        function( json ) {
+            $("#endereco_id").val(json.results.id);
+        });
     });
+});
+
 });
 </script>

@@ -69,6 +69,25 @@ class ClienteDAO extends Object
         return $this->cliente;
     }
     
+    public function setMapsApiEndereco($endereco, $arrCliente)
+    {
+        $arrEndereco = explode(",", $arrCliente['cli_endereco']);        
+        $endereco->setLogradouro($arrEndereco[0]);
+        
+        $arrNumeroBairro = explode("-", $arrEndereco[1]);
+        $endereco->setNumero(trim($arrNumeroBairro[0]));
+        $endereco->setBairro(trim($arrNumeroBairro[1]));
+        
+        $arrCidadeEstado = explode("-", $arrEndereco[2]);
+        $endereco->setCidade(trim($arrCidadeEstado[0]));
+        $endereco->setEstado(trim($arrCidadeEstado[1]));
+
+        $arrEndereco[3] = trim(str_replace("-", "", $arrEndereco[3]));
+        $endereco->setCep(is_numeric($arrEndereco[3]) ? $arrEndereco[3] : '');
+        
+        $endereco->setGeoLocalizacao($arrCliente['geolocalizacao']);
+    }
+    
     private function setEndereco(array $arrCliente)
     {
         $endereco = new Endereco();
@@ -79,21 +98,14 @@ class ClienteDAO extends Object
             $endereco = $endereco[0];
             
             $this->cliente->setEndereco($endereco);
-            return;
+            return $endereco;
         }
-        $arrEndereco = explode(",", $arrCliente['cli_endereco']);
-        $arrLogradouroBairro = explode("-", $arrEndereco[0]);
-        $endereco->setLogradouro($arrLogradouroBairro[0]);
-        $endereco->setBairro($arrLogradouroBairro[1]);
-
-        $arrCidadeEstado = explode("-", $arrEndereco[1]);
-        $endereco->setCidade($arrCidadeEstado[0]);
-        $endereco->setEstado($arrCidadeEstado[1]);
-
-        $endereco->setCep($arrEndereco[2]);
-        $endereco->setNumero($arrCliente['cli_numero']);
-        $endereco->setGeoLocalizacao($arrCliente['geolocalizacao']);
-        var_dump($endereco);die;
+        
+        $this->setMapsApiEndereco($endereco, $arrCliente);
+        $enderecoDAO = new EnderecoDAO();
+        $endereco = $enderecoDAO->salvar($endereco);
+        
+        $this->cliente->setEndereco($endereco);
     }
     
     public function salvar(Cliente $cliente)

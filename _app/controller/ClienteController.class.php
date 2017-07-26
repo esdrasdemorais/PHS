@@ -14,20 +14,25 @@ class ClienteController extends Controller
 
     public function indexAction()
     {
-        $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','nome'=>'','email'=>'','endereco'=>'','telefone'=>'');
+        $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','nome'=>'',
+            'email'=>'','endereco'=>'','telefone'=>'');
         View::Load('view/cliente/salvar');
         View::render('view/cliente/salvar', $arrDados);
     }
 
     public function criarAction()
     {
-        $arrCliente = array('id'=>'','nome'=>'','email'=>'','endereco'=>'','telefone'=>'');
+        $arrCliente = array('id'=>'','nome'=>'','email'=>'','endereco'=>'',
+            'telefone'=>'');
         if (is_numeric($this->getParams('id'))) {
             $this->clienteDAO = new ClienteDAO();
-            $this->cliente = $this->clienteDAO->listar($this->getParams('id'))[0];
-            $arrCliente = (array) $this->cliente;
+            $this->cliente = $this->clienteDAO->listar(
+                $this->getParams('id'))[0];
+            $object = new Object();
+            $arrCliente = $object->toArray($this->cliente);
         }
-        $arrCliente = array_merge($arrCliente, array('url'=>$this->getBaseUrl()));
+        $arrCliente = array_merge($arrCliente, 
+            array('url'=>$this->getBaseUrl()));
         View::render('view/cliente/salvar', $arrCliente);
     }
 
