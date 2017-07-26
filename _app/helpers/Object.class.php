@@ -4,7 +4,7 @@
  *
  * @author esdrassilva
  */
-abstract class Object
+class Object
 {
     function toArray($obj)
     {

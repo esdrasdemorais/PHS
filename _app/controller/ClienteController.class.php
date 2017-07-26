@@ -14,20 +14,25 @@ class ClienteController extends Controller
 
     public function indexAction()
     {
-        $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','nome'=>'','email'=>'','endereco'=>'','telefone'=>'');
+        $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','nome'=>'',
+            'email'=>'','endereco'=>'','telefone'=>'');
         View::Load('view/cliente/salvar');
         View::render('view/cliente/salvar', $arrDados);
     }
 
     public function criarAction()
     {
-        $arrCliente = array('id'=>'','nome'=>'','email'=>'','endereco'=>'','telefone'=>'');
+        $arrCliente = array('id'=>'','nome'=>'','email'=>'','endereco'=>'',
+            'telefone'=>'');
         if (is_numeric($this->getParams('id'))) {
             $this->clienteDAO = new ClienteDAO();
-            $this->cliente = $this->clienteDAO->listar($this->getParams('id'))[0];
-            $arrCliente = (array) $this->cliente;
+            $this->cliente = $this->clienteDAO->listar(
+                $this->getParams('id'))[0];
+            $object = new Object();
+            $arrCliente = $object->toArray($this->cliente);
         }
-        $arrCliente = array_merge($arrCliente, array('url'=>$this->getBaseUrl()));
+        $arrCliente = array_merge($arrCliente, 
+            array('url'=>$this->getBaseUrl()));
         View::render('view/cliente/salvar', $arrCliente);
     }
 
@@ -35,7 +40,13 @@ class ClienteController extends Controller
     {
         $this->clienteDAO = new ClienteDAO();
         $this->cliente = $this->clienteDAO->setCliente($this->getRequest());
-        $this->clienteDAO->salvar($this->cliente);        
+        $cliente = $this->clienteDAO->salvar($this->cliente);
+        if ($cliente->getId() > 0) {
+            $arrCliente = array('id'=>$cliente->getId(),'tipo'=>'cliente',
+                'email'=>$cliente->getEmail(),'url'=>$this->getBaseUrl(),
+                'login'=>'','senha'=>'','msg'=>'');
+            View::render('view/login/criar', $arrCliente);
+        }
     }
 
     public function alterarAction()
