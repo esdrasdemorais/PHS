@@ -97,8 +97,8 @@ class LoginController extends Controller
             View::render('view/login/recuperar', array('tipo'=>$this->tipo,
                 'email'=>$email,'url'=>$this->getBaseUrl(),'id'=>'','msg'=>
                 'Email inválido.'));
-            return;
         }
+            return;
         
         $this->loginModel = $this->loginDAO->checkEmail($email);
         if (!($this->loginModel instanceof $loginModelName)) {

@@ -16,7 +16,6 @@ class ClienteController extends Controller
     {
         $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','nome'=>'',
             'email'=>'','endereco'=>'','telefone'=>'');
-        View::Load('view/cliente/salvar');
         View::render('view/cliente/salvar', $arrDados);
     }
 

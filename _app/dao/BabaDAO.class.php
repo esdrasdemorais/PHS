@@ -1,8 +1,8 @@
 <?php
 
-namespace _app\DAO;
-
-use _app\Model\Baba as Baba;
+//namespace _app\DAO;
+//
+//use _app\Model\Baba as Baba;
 
 /**
  * BabaDAO.class.php [ TIPO ]
@@ -38,7 +38,7 @@ class BabaDAO
         return $arrBaba;
     }
     
-    private function setServico(array $servico)
+    public function setServico(array $servico)
     {
         $baba = new Baba();
         $baba->setId($servico['id']);
