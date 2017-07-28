@@ -43,7 +43,8 @@ CREATE TABLE servico (
     periodo VARCHAR(70) NOT NULL,
     valorHora FLOAT NOT NULL,
     valorTotal FLOAT NOT NULL,
-    cliente_id INT UNSIGNED NOT NULL
+    cliente_id INT UNSIGNED NOT NULL,
+    emailEnviado CHAR(1) NOT NULL DEFAULT 'N'
 );
 
 CREATE TABLE complemento (

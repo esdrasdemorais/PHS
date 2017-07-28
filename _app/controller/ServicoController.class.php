@@ -3,6 +3,9 @@
 class ServicoController extends Controller
 {
     protected $servico;
+    protected $Baba;
+    protected $Cuidador;
+    protected $Diarista;
     protected $BabaDAO;
     protected $CuidadorDAO;
     protected $DiaristaDAO;
@@ -28,23 +31,65 @@ class ServicoController extends Controller
         $tipo = $this->getParams()['tipo'];
         switch ($tipo){
             case 'baba': 
+                $this->salvarBaba();
+                break;
+            case 'diarista':
+                $this->salvarDiarista();
+                break;
+            case 'cuidador':
+                $this->salvarCuidador();
+                break;
         }
     }
     
-    private function salvarBaba()
-    {
+    private function salvarBaba(){
         try{
-            $this->BabaDAO = new BabaDAO();        
-            $this->BabaDAO->salvar($this->BabaDAO->setServico($this->getParams()));
-            
-        } catch (Exception $ex) {
-              PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
+            $this->BabaDAO = new BabaDAO();   
+            $this->Baba = $this->BabaDAO->setServico($this->getParams());
+            $this->BabaDAO->salvar($this->Baba);            
+            if(true === $this->enviarEmail($this->Baba)){
+                $this->Baba->setEmailEnviado('S');
+                $this->BabaDAO->alterar($this->Baba);
+            }
+            $this->enviarSucesso();
+        } catch (Exception $e) {
+            SSErro("Ops! Infelizmente ouve um problema. Tente novamente!", SS_ERROR);                                   
         }    
-
-    }
+    }   
     
-    private function enviarEmail($servico) 
-    {
+    private function salvarCuidador(){
+        try{
+            $this->CuidadorDAO = new CuidadorDAO();   
+            $this->Cuidador = $this->CuidadorDAO->setServico($this->getParams());
+            $this->CuidadorDAO->salvar($this->Cuidador);            
+            if(true === $this->enviarEmail($this->Cuidador)){
+                $this->Cuidador->setEmailEnviado('S');
+                $this->CuidadorDAO->alterar($this->Cuidador);
+            }
+            $this->enviarSucesso();
+        } catch (Exception $e) {
+            SSErro("Ops! Infelizmente ouve um problema. Tente novamente!", SS_ERROR);                                   
+        }    
+    }  
+    
+    private function salvarDiarista(){
+        try{
+            $this->DiaristaDAO = new DiaristaDAO();   
+            $this->Diarista = $this->DiaristaDAO->setServico($this->getParams());
+            $this->DiaristaDAO->salvar($this->Diarista);            
+            if(true === $this->enviarEmail($this->Diarista)){
+                $this->Diarista->setEmailEnviado('S');
+                $this->DiaristaDAO->alterar($this->Diarista);
+            }
+            $this->enviarSucesso();
+        } catch (Exception $e) {
+            SSErro("Ops! Infelizmente ouve um problema. Tente novamente!", SS_ERROR);                                   
+        }    
+    }  
+
+    
+    private function enviarEmail($arSender,$arReciver,$servico) 
+    {            
         require_once __DIR__ . '/../vendor/PHPMailer/PHPMailerAutoload.php';
         $mail = new PHPMailer();$mail->SMTPDebug = 3;$mail->setLanguage('pt_br', '/optional/path/to/language/directory/');
         $mail->isSMTP();                                      // Set mailer to use SMTP
@@ -63,14 +108,22 @@ class ServicoController extends Controller
         $mail->Body    = 'Foi solicitado o serviço de '. ucfirst($servico->getTipo()) . ', para cliente abaixo:'
                          .'<br> Nome: ' . $servico->getCliente()->getNome()
                          .'<br> Endereço: ' . $servico->getEndereco()->getLogradouro() . ', '
-                         . $servico->getEndereco()->getNumero() . ', '. $servico-> . $servico->getEndereco()->getBairro()
+                         . $servico->getEndereco()->getNumero() . ', '. $servico->getEndereco()->getComplemento()
+                         . ', '. $servico->getEndereco()->getBairro()
                          . ', ' . $servico->getEndereco()->getCidade() . '-' . $servico->getEndereco()->getEstado()
-                         .;
-        if (false === $mail->send()) {
-            return 'Não foi possível enviar email. ' . $mail->ErrorInfo;
+                         .'<br> Data do Agendamento: ' . $servico->getData()
+                         .'<br> Horário: ' .  $servico->getHora()
+                         .'<br> Periodo: ' . $servico->getPeriodo();
+        if (false === $mail->send()) {           
+            return true;
         }    
-        return 'Email enviado!';
+        return false;
     }
     
+    private function enviarSucesso(){
+        $mensagem = 'Sua solicitação de ' . $this->getParams()['tipo'] . 'está concluída.'
+                . '<br> Aguarde contato para confirmação!';
+        $arrDados = array('titulo'=>'SUCESSO!!!', 'servicos'=> $mensagem);
+    }
     
 }

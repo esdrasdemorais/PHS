@@ -49,7 +49,7 @@ class ServicoEndereco
         $this->complemento = $complemento;
     }
 
-    function setDescricao(string $descricao) {
+    function setDescricao($descricao) {
         $this->descricao = $descricao;
     }
 

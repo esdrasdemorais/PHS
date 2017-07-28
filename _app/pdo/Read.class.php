@@ -103,7 +103,7 @@ class Read extends Conn {
             $this->Result = $this->Read->fetchAll();
         } catch (PDOException $e) {
             $this->Result = null;
-            WSErro("<b>Erro ao Ler:</b> {$e->getMessage()}", $e->getCode());
+            SSErro("<b>Erro ao Ler:</b> {$e->getMessage()}", $e->getCode());
         }
     }
 
