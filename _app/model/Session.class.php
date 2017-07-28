@@ -10,9 +10,9 @@ class Session extends Object implements SessionHandlerInterface
     private   $loginModel;
     private   $sessionHandler;
     
-    public function __construct($login, $tipo)
+    public function __construct($tipo, $login)
     {
-        $loginDAOName = 'Login' . ucfirst($tipo) . 'DAO';
+        $loginDAOName = is_null($tipo) ? null : 'Login'.ucfirst($tipo).'DAO';
 	$this->loginDAO = new $loginDAOName();
 	$this->loginModel = $login;
 
@@ -54,7 +54,7 @@ class Session extends Object implements SessionHandlerInterface
     {
 	ini_set('session.save_handler', 'files');
     	if (true === session_set_save_handler($this->sessionHandler, true)) {
-	    session_start();
+	    //session_start();
     	    $this->loginModel->setDataUltimoAcesso(date('Y-m-d H:i:s'));
             $this->loginModel->setLogado('1');
 	    $this->loginDAO->atualizar($this->loginModel);
@@ -65,6 +65,7 @@ class Session extends Object implements SessionHandlerInterface
     {
         $arrLogin = array(
             "login"=>$login->getLogin(),
+            "cliente_id"=>$login->getCliente()
         );
 	foreach($arrLogin as $chave => $valor) {
 	    $this->set($chave, $valor);
@@ -77,8 +78,13 @@ class Session extends Object implements SessionHandlerInterface
 	$_SESSION[$chave] = $valor;
     }
 
-    public function get($chave)
+    public static function get($chave)
     {
-	return $_SESSION[$chave];
+	return isset($_SESSION[$chave]) ? $_SESSION[$chave] : false;
+    }
+    
+    public static function checkSession()
+    {var_dump($_SESSION);die;
+        return strlen(trim((static::get('login')))) > 0;
     }
 }

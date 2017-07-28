@@ -27,8 +27,8 @@ class UsuarioFacade
 	$loginContext = new LoginContext($this->loginDAO);
         $login = $loginContext->autenticarStrategy($log);
 	
-	$this->session = new Session($log, $this->tipo);
-	$this->session->criar($log);
+	//$this->session = new Session($this->tipo, $log);
+	//$this->session->criar($log);
 
         $this->cookie->criar($log);
         

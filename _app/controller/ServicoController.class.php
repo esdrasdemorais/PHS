@@ -7,6 +7,16 @@ class ServicoController extends Controller
     protected $CuidadorDAO;
     protected $DiaristaDAO;
 
+    public function __construct()
+    {
+        parent::__construct();
+        if (false === Session::checkSession()
+            && false === Cookie::isCreated())
+        {
+            $this->redirect($this->getBaseUrl() . '/index.php/login');
+        }
+    }
+    
     public function indexAction()
     {
         $arrDados = array('url'=>$this->getBaseUrl(), 'servicos'=> array(
@@ -19,28 +29,33 @@ class ServicoController extends Controller
     public function escolherAction()
     {
         $tipo = $this->getParams()['tipo'];
-        $arrDados = array('id'=>'','data'=>'','hora'=>'','periodo'=>'','endereco'=>'','tipo'=>$tipo);
+        $arrDados = array('url'=>$this->getBaseUrl(), 'id'=>'','data'=>'',
+            'hora'=>'','periodo'=>'','endereco'=>'','tipo'=>$tipo);
         View::render('view/servico/definir', $arrDados);
     }
     
     public function salvarAction()
     {
         $tipo = $this->getParams()['tipo'];
-        switch ($tipo){
-            case 'baba': 
+        switch ($tipo) {
+            case 'baba':
+                $this->salvarBaba();
+                break;
         }
     }
     
     private function salvarBaba()
     {
-        try{
-            $this->BabaDAO = new BabaDAO();        
-            $this->BabaDAO->salvar($this->BabaDAO->setServico($this->getParams()));
-            
+        try {
+            $this->babaDAO = new BabaDAO();        
+            $servico = $this->babaDAO->salvar(
+                $this->BabaDAO->setServico($this->getParams())
+            );
+            $this->enviarEmail($servico);
         } catch (Exception $ex) {
-              PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
-        }    
-
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine());                                   
+        }
     }
     
     private function enviarEmail($servico) 
@@ -56,21 +71,20 @@ class ServicoController extends Controller
         $mail->Port = 587;                                    // TCP port to connect to
         $mail->setFrom('from@example.com', 'Mailer');
         $mail->addAddress('joe@example.net', 'Joe User');     // Add a recipient
-        $mail->addReplyTo('info@example.com', 'Information');
-        $mail->addCC('cc@example.com');$mail->addBCC('bcc@example.com');
+        $mail->addReplyTo($servico->getCliente()->getEmail(), 'Information');
+        //$mail->addCC('cc@example.com');$mail->addBCC('bcc@example.com');
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Terceiro Elemento - Solicitação de Serviço de' . ucfirst($servico->getTipo()) ;
-        $mail->Body    = 'Foi solicitado o serviço de '. ucfirst($servico->getTipo()) . ', para cliente abaixo:'
-                         .'<br> Nome: ' . $servico->getCliente()->getNome()
-                         .'<br> Endereço: ' . $servico->getEndereco()->getLogradouro() . ', '
-                         . $servico->getEndereco()->getNumero() . ', '. $servico-> . $servico->getEndereco()->getBairro()
-                         . ', ' . $servico->getEndereco()->getCidade() . '-' . $servico->getEndereco()->getEstado()
-                         .;
+        $mail->Body = 'Foi solicitado o serviço de '. ucfirst($servico->getTipo()) . ', para cliente abaixo:'
+            .'<br> Nome: ' . $servico->getCliente()->getNome()
+            .'<br> Endereço: ' . $servico->getEndereco()->getLogradouro() . ', '
+            . $servico->getEndereco()->getNumero() . ' - '. $servico->getEndereco()->getBairro()
+            . ', ' . $servico->getEndereco()->getCidade() . ' - ' . $servico->getEndereco()->getEstado() .
+            '<br><hr><br>Detalhe do Serviço:<br>Data do Agendamento: ' . $servico->getData() .
+            '';
         if (false === $mail->send()) {
             return 'Não foi possível enviar email. ' . $mail->ErrorInfo;
         }    
         return 'Email enviado!';
     }
-    
-    
 }

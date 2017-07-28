@@ -1,4 +1,3 @@
-<script type="text/javascript">
 $(document).ready(function() {
 
 $('#endereco').keyup(function() {
@@ -44,4 +43,3 @@ $('#endereco').keyup(function() {
 });
 
 });
-</script>

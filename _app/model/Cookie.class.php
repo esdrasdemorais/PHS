@@ -31,11 +31,17 @@ class Cookie extends Object
 
     public function set($chave, $valor)
     {
-        setcookie($chave, $valor, time() + 60 * 60 * 24 * 366);
+        setcookie($chave, $valor, time() + 60 * 60 * 24 * 366 * 10,
+            '/', '', true, true);
     }
 
-    public function get($chave)
+    public static function get($chave)
     {
         return filter_input(INPUT_COOKIE, $chave);
+    }
+    
+    public static function isCreated()
+    {
+        return strlen(trim(static::get(static::$cookieName))) > 0;
     }
 }

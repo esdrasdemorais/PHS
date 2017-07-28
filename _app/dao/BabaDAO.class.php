@@ -10,16 +10,18 @@
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
 class BabaDAO
-{  
+{
     public function alterar(Baba $baba)
     {
         $update = new Update();
 
         try {
-          $update->ExeUpdate("servico", (array)$baba, 'where id=:id and tipo=:tipo', ':id='.$baba->getId().' :tipo='.ServicoTipo::Baba);
-          //return $baba;
+            $update->ExeUpdate("servico", (array)$baba, 'where id=:id and ' .
+                'tipo=:tipo', ':id='.$baba->getId().' :tipo='.ServicoTipo::Baba);
+            //return $baba;
         } catch (Exception $ex) {  
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine()); 
         }
     }
     
@@ -28,7 +30,8 @@ class BabaDAO
         $arrBaba = array();                
         $read = new Read();
         if (is_numeric($id)) {
-            $read->ExeRead('servico', 'id=:id and tipo=:tipo', ':id='.$id.' :tipo='.ServicoTipo::Baba);
+            $read->ExeRead('servico', 'id=:id and tipo=:tipo', 
+                ':id='.$id.' :tipo='.ServicoTipo::Baba);
         } else {
             $read->ExeRead('baba');
         }        
@@ -54,41 +57,41 @@ class BabaDAO
         return $baba;
     }
       
-      public function salvar(Baba $baba)
-      {
-          $create = new Create();
-                    
-          try{
+    public function salvar(Baba $baba)
+    {
+        $create = new Create();
+
+        try {
             $arrbaba = (array)$baba;
             $arrbaba['tipo'] = ServicoTipo::Baba;
             $create->ExeCreate('baba', $arrbaba);
-            if(is_numeric($create->getResult())){
+            if (is_numeric($create->getResult())) {
                 $baba->setId($create->getResult());
                 return $baba;
-            } else{
+            } else {
                 throw new Exception('Não foi possível realizar seu cadastro.');
             }
-          } catch (Exception $ex) {
-              PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
-          }
-      }
+        } catch (Exception $ex) {
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine());                                   
+        }
+    }
       
-      public function deletar(Baba $baba)
-      {
-          $delete = new Delete();
-          
-          try {
-              $delete->ExeDelete("servico", (array)$baba, 'where id=:id and tipo=:tipo', ':id='.$baba->getId().' :tipo='.ServicoTipo::Baba);
-              if($delete->getResult() === true){
-                  return "Baba removido com sucesso!";      
-              } else {
-                  throw new Exception("Não foi possível remover o baba.");
-              }
-                  
-          } catch (Exception $ex) {
-                 PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
-          }
-         
-      }
-      
+    public function deletar(Baba $baba)
+    {
+        $delete = new Delete();
+
+        try {
+            $delete->ExeDelete("servico", (array)$baba, 'where id=:id and ' .
+                'tipo=:tipo', ':id='.$baba->getId().' :tipo='.ServicoTipo::Baba);
+            if($delete->getResult() === true){
+                return "Baba removido com sucesso!";      
+            } else {
+                throw new Exception("Não foi possível remover o baba.");
+            }
+        } catch (Exception $ex) {
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine()); 
+        }
+    }
 }

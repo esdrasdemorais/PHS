@@ -13,7 +13,8 @@ class LoginClienteDAO extends Object implements LoginStrategy
         $login->setSenha($arrLogin['senha']);
         
         $clienteDAO = new ClienteDAO();
-        $cliente = $clienteDAO->listar($arrLogin['id'])[0];
+        $cliente = ((int)$arrLogin['id']) > 0 ?
+            $clienteDAO->listar($arrLogin['id'])[0] : new Cliente();
         $login->setCliente($cliente);
         
         return $login;
@@ -75,7 +76,8 @@ class LoginClienteDAO extends Object implements LoginStrategy
         $arrLogin = array(
             "login"=>$login->getLogin(), "senha"=>sha1($login->getSenha()),
             "logado"=>$login->getLogado(),
-            "data_ultimo_acesso"=>$login->getDataUltimoAcesso());
+            "data_ultimo_acesso"=>$login->getDataUltimoAcesso(),
+            "cookie_hash"=>$login->getCookieHash());
         try {
             $update->ExeUpdate("login", $arrLogin, 'where id=:id',
                 'id='.$login->getId());
