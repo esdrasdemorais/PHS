@@ -29,6 +29,7 @@ class SessionManagement
 
     public static function persist($tipo)
     {
+        //session_start();
 	if (true === Session::checkSession()
             || true === Cookie::isCreated())
         {

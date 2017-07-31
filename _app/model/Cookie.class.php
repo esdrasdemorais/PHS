@@ -21,12 +21,13 @@ class Cookie extends Object
     public function criar($login)
     {
         $this->loginModel = $login;
-        
-        $valor = hash('sha512', $this->loginModel->getLogin());
-        $this->set(static::$cookieName, $valor);
-        
-        $this->loginModel->setCookieHash($valor);
-        $this->loginDAO->atualizar($this->loginModel);
+        if (is_object($login)) {
+            $valor = hash('sha512', $this->loginModel->getLogin());
+            $this->set(static::$cookieName, $valor);
+
+            $this->loginModel->setCookieHash($valor);
+            $this->loginDAO->atualizar($this->loginModel);
+        }
     }
 
     public function set($chave, $valor)

@@ -52,27 +52,29 @@ class Session extends Object implements SessionHandlerInterface
 
     private function salvar()
     {
-	ini_set('session.save_handler', 'files');
+        //ini_set('session.save_handler', 'files');
     	if (true === session_set_save_handler($this->sessionHandler, true)) {
 	    //session_start();
-    	    $this->loginModel->setDataUltimoAcesso(date('Y-m-d H:i:s'));
-            $this->loginModel->setLogado('1');
-	    $this->loginDAO->atualizar($this->loginModel);
+    	    //$this->loginModel->setDataUltimoAcesso(date('Y-m-d H:i:s'));
+            //$this->loginModel->setLogado('1');
+	    //$this->loginDAO->atualizar($this->loginModel);
 	}
     }
 
     public function criar($login)
     {
-        $arrLogin = array(
-	    "id"=>$login->getId(),
-	    "tipo"=>$login->getTipo(),
-	    "login"=>$login->getLogin(),
-	    "cliente_id"=>$login->getCliente(),
-	    "logado"=>$login->getLogado()
-        );
-	foreach($arrLogin as $chave => $valor) {
-	    $this->set($chave, $valor);
-	}
+        if (is_object($login)) {
+            $arrLogin = array(
+                "id"=>$login->getId(),
+                "tipo"=>$login->getTipo(),
+                "login"=>$login->getLogin(),
+                "cliente_id"=>$login->getCliente(),
+                "logado"=>$login->getLogado()
+            );
+            foreach($arrLogin as $chave => $valor) {
+                $this->set($chave, $valor);
+            }
+        }
 	return count($_SESSION) > 0;
     }
 
@@ -87,7 +89,7 @@ class Session extends Object implements SessionHandlerInterface
     }
     
     public static function checkSession()
-    {var_dump($_SESSION);die;
+    {//var_dump($_SESSION);
         return strlen(trim((static::get('login')))) > 0;
     }
 }

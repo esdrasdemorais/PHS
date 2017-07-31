@@ -9,6 +9,7 @@ class LoginClienteDAO extends Object implements LoginStrategy
     public function setLogin($arrLogin)
     {
         $login = new LoginCliente();
+        $login->setId(isset($arrLogin['id']) ? $arrLogin['id'] : null);
         $login->setLogin($arrLogin['login']);
         $login->setSenha($arrLogin['senha']);
         
@@ -29,25 +30,30 @@ class LoginClienteDAO extends Object implements LoginStrategy
         return true === count($read->getResult()) > 0;
     }
     
+    private function saveLogado($login)
+    {
+        $login->setLogado('1');
+        $login->setDataUltimoAcesso(date('Y-m-d H:i:s'));
+        $update = new Update();
+        $arrLogin = array(
+            "logado"=>$login->getLogado(), "data_ultimo_acesso"=>
+            $login->getDataUltimoAcesso()
+        );
+        $update->ExeUpdate('login', $arrLogin, 'where id=:id', 'id=' . 
+            $login->getId());
+    }
+    
     public function autenticar($login)
     {
+        $read = new Read();
         if (true === $this->isLoged($login)) {
             return true;
         }
-        $read = new Read();
         $read->ExeRead('login', 'where login=:login and senha=:senha', 
         'login=' . $login->getLogin() . '&senha=' . sha1($login->getSenha()));
         if (true === count($read->getResult()) > 0) {
-            $login->setId($read->getResult()[0]['id']);
-            $login->setLogado('1');
-            $login->setDataUltimoAcesso(date('Y-m-d H:i:s'));
-            $update = new Update();
-            $arrLogin = array(
-                "cliente_id"=>$login->getCliente(), "tipo"=>$login->getTipo(), 
-                "login"=>$login->getLogin(), "senha"=>sha1($login->getSenha()),
-            );
-            $update->ExeUpdate('login', $arrLogin, 
-                'where id=:id', 'id=' . $read->getResult()[0]['id']);
+            $login = $this->setLogin($read->getResult()[0]);
+            $this->saveLogado($login);
             return $login;
         }
         return false;
