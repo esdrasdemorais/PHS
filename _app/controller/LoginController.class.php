@@ -23,9 +23,9 @@ class LoginController extends Controller
         $loginModelName = 'Login' . ucfirst($this->tipo);
         $this->loginModel = new $loginModelName();
         
-        /*if (true === Session::checkSession() || true === Cookie::isCreated()) {
+	if (false === SessionManagement::persist($this->tipo)) {
             $this->redirect($this->getBaseUrl() . '/index.php/servico');
-        }*/
+        }
     }
     
     public function indexAction()

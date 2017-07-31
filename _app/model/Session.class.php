@@ -64,8 +64,11 @@ class Session extends Object implements SessionHandlerInterface
     public function criar($login)
     {
         $arrLogin = array(
-            "login"=>$login->getLogin(),
-            "cliente_id"=>$login->getCliente()
+	    "id"=>$login->getId(),
+	    "tipo"=>$login->getTipo(),
+	    "login"=>$login->getLogin(),
+	    "cliente_id"=>$login->getCliente(),
+	    "logado"=>$login->getLogado()
         );
 	foreach($arrLogin as $chave => $valor) {
 	    $this->set($chave, $valor);

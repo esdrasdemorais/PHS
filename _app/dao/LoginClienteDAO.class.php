@@ -55,8 +55,7 @@ class LoginClienteDAO extends Object implements LoginStrategy
 
     public function checkEmail($email)
     {
-        $clienteDAO = new ClienteDAO();
-        
+        $clienteDAO = new ClienteDAO();       
         return $clienteDAO->searchByEmail($email);
     }
     
@@ -85,7 +84,7 @@ class LoginClienteDAO extends Object implements LoginStrategy
         } catch (Exception $ex) {
             PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
                 $ex->getLine());
-        }
+       }
     }
     
     public function salvar($login)
@@ -106,63 +105,13 @@ class LoginClienteDAO extends Object implements LoginStrategy
             throw new Exception('Não foi possível salvar seu login.');
         }
     }
+
+    public function searchByCookie(Cookie $cookie)
+    {
+	$read = new Read();
+	$hash = $cookie->get(static::$cookieName);
+        $read->ExeRead('login', 'where cookie_hash=:cookie', 'cookie='.$hash);
+        
+        return $read->getResult();
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

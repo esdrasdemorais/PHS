@@ -10,11 +10,9 @@ class ServicoController extends Controller
     public function __construct()
     {
         parent::__construct();
-        if (false === Session::checkSession()
-            && false === Cookie::isCreated())
-        {
-            $this->redirect($this->getBaseUrl() . '/index.php/login');
-        }
+	if (false === SessionManagement::persist('cliente')) {
+	    $this->redirect($this->getBaseUrl() . '/index.php/login');
+	}
     }
     
     public function indexAction()
