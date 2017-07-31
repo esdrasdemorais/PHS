@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require '_app/Config.inc.php';
 
 $url = $_SERVER['REQUEST_URI'];//retorna url

@@ -7,14 +7,14 @@
 class Session extends Object implements SessionHandlerInterface
 {
     protected $loginDAO;
-    private   $loginModel;
+    //private   $loginModel;
     private   $sessionHandler;
     
-    public function __construct($login, $tipo)
+    public function __construct($tipo, $login)
     {
-        $loginDAOName = 'Login' . ucfirst($tipo) . 'DAO';
+        $loginDAOName = is_null($tipo) ? null : 'Login'.ucfirst($tipo).'DAO';
 	$this->loginDAO = new $loginDAOName();
-	$this->loginModel = $login;
+	//$this->loginModel = $login;
 
         $this->sessionHandler = new SessionHandler();
 	$this->salvar();
@@ -52,23 +52,29 @@ class Session extends Object implements SessionHandlerInterface
 
     private function salvar()
     {
-	ini_set('session.save_handler', 'files');
+        //ini_set('session.save_handler', 'files');
     	if (true === session_set_save_handler($this->sessionHandler, true)) {
-	    session_start();
-    	    $this->loginModel->setDataUltimoAcesso(date('Y-m-d H:i:s'));
-            $this->loginModel->setLogado('1');
-	    $this->loginDAO->atualizar($this->loginModel);
+	    //session_start();
+    	    //$this->loginModel->setDataUltimoAcesso(date('Y-m-d H:i:s'));
+            //$this->loginModel->setLogado('1');
+	    //$this->loginDAO->atualizar($this->loginModel);
 	}
     }
 
     public function criar($login)
     {
-        $arrLogin = array(
-            "login"=>$login->getLogin(),
-        );
-	foreach($arrLogin as $chave => $valor) {
-	    $this->set($chave, $valor);
-	}
+        if (is_object($login)) {
+            $arrLogin = array(
+                "id"=>$login->getId(),
+                "tipo"=>$login->getTipo(),
+                "login"=>$login->getLogin(),
+                "cliente_id"=>$login->getCliente(),
+                "logado"=>$login->getLogado()
+            );
+            foreach($arrLogin as $chave => $valor) {
+                $this->set($chave, $valor);
+            }
+        }
 	return count($_SESSION) > 0;
     }
 
@@ -77,8 +83,13 @@ class Session extends Object implements SessionHandlerInterface
 	$_SESSION[$chave] = $valor;
     }
 
-    public function get($chave)
+    public static function get($chave)
     {
-	return $_SESSION[$chave];
+	return isset($_SESSION[$chave]) ? $_SESSION[$chave] : false;
+    }
+    
+    public static function checkSession()
+    {//var_dump($_SESSION);
+        return strlen(trim((static::get('login')))) > 0;
     }
 }

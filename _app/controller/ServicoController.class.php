@@ -10,6 +10,14 @@ class ServicoController extends Controller
     protected $CuidadorDAO;
     protected $DiaristaDAO;
 
+    public function __construct()
+    {
+        parent::__construct();
+	if (false === SessionManagement::persist('cliente')) {
+	    $this->redirect($this->getBaseUrl() . '/index.php/login');
+	}
+    }
+    
     public function indexAction()
     {
         $arrDados = array('url'=>$this->getBaseUrl(), 'servicos'=> array(
@@ -22,7 +30,8 @@ class ServicoController extends Controller
     public function escolherAction()
     {
         $tipo = $this->getParams()['tipo'];
-        $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','data'=>'','hora'=>'','periodo'=>'','endereco'=>'','tipo'=>$tipo);
+        $arrDados = array('url'=>$this->getBaseUrl(), 'id'=>'','data'=>'',
+            'hora'=>'','periodo'=>'','endereco'=>'','tipo'=>$tipo);
         View::render('view/servico/definir', $arrDados);
     }
     
@@ -45,8 +54,7 @@ class ServicoController extends Controller
     private function salvarBaba(){
         try{
             $this->BabaDAO = new BabaDAO();   
-            $this->Baba = $this->BabaDAO->setServico($this->getRequest());
-            var_dump($this->Baba);
+            $this->Baba = $this->BabaDAO->setServico($this->getRequest());            
             $this->BabaDAO->salvar($this->Baba);            
             if(true === $this->enviarEmail($this->Baba)){
                 $this->Baba->setEmailEnviado('S');
@@ -76,7 +84,7 @@ class ServicoController extends Controller
     private function salvarDiarista(){
         try{
             $this->DiaristaDAO = new DiaristaDAO();   
-            $this->Diarista = $this->DiaristaDAO->setServico($this->getRequest());
+            $this->Diarista = $this->DiaristaDAO->setServico($this->getRequest());            
             $this->DiaristaDAO->salvar($this->Diarista);            
             if(true === $this->enviarEmail($this->Diarista)){
                 $this->Diarista->setEmailEnviado('S');
@@ -88,8 +96,7 @@ class ServicoController extends Controller
         }    
     }  
 
-    
-    private function enviarEmail($arSender,$arReciver,$servico) 
+    private function enviarEmail($servico) 
     {            
         require_once __DIR__ . '/../vendor/PHPMailer/PHPMailerAutoload.php';
         $mail = new PHPMailer();$mail->SMTPDebug = 3;$mail->setLanguage('pt_br', '/optional/path/to/language/directory/');
@@ -102,8 +109,8 @@ class ServicoController extends Controller
         $mail->Port = 587;                                    // TCP port to connect to
         $mail->setFrom('from@example.com', 'Mailer');
         $mail->addAddress('joe@example.net', 'Joe User');     // Add a recipient
-        $mail->addReplyTo('info@example.com', 'Information');
-        $mail->addCC('cc@example.com');$mail->addBCC('bcc@example.com');
+        $mail->addReplyTo($servico->getCliente()->getEmail(), 'Information');
+        //$mail->addCC('cc@example.com');$mail->addBCC('bcc@example.com');
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Terceiro Elemento - Solicitação de Serviço de' . ucfirst($servico->getTipo()) ;
         $mail->Body    = 'Foi solicitado o serviço de '. ucfirst($servico->getTipo()) . ', para cliente abaixo:'
@@ -120,11 +127,10 @@ class ServicoController extends Controller
         }    
         return false;
     }
-    
+
     private function enviarSucesso(){
         $mensagem = 'Sua solicitação de ' . $this->getParams()['tipo'] . 'está concluída.'
                 . '<br> Aguarde contato para confirmação!';
         $arrDados = array('titulo'=>'SUCESSO!!!', 'servicos'=> $mensagem);
-    }
-    
+    }  
 }

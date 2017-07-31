@@ -22,6 +22,10 @@ class LoginController extends Controller
         
         $loginModelName = 'Login' . ucfirst($this->tipo);
         $this->loginModel = new $loginModelName();
+        
+	if (true === SessionManagement::persist($this->tipo)) {
+            $this->redirect($this->getBaseUrl() . '/index.php/servico');
+        }
     }
     
     public function indexAction()
@@ -38,19 +42,16 @@ class LoginController extends Controller
 
         $usuarioFacade = new UsuarioFacade($this->getParams()['tipo']);
         $login = $usuarioFacade->inicializar($this->loginModel);
-
-        if (true === $login) {
+        
+        if (true === ($login instanceof $loginModelName)) {
             $this->redirect($this->getBaseUrl().'/index.php/servico');
+            return;
         }
         
-        if (false === ($login instanceof $loginModelName)) {
-            $login = $this->getRequest()['login'];
-            View::render('view/login/login', array('tipo'=>$this->tipo,'login'=>
-                $login,'senha'=>'','url'=>$this->getBaseUrl(),'id'=>'','msg'=>
-                'Usuario ou senha não existe.'));
-        }
-        
-        $this->redirect($this->getBaseUrl().'/index.php/servico');
+        $login = $this->getRequest()['login'];
+        View::render('view/login/login', array('tipo'=>$this->tipo,'login'=>
+            $login,'senha'=>'','url'=>$this->getBaseUrl(),'id'=>'','msg'=>
+            'Usuario ou senha não existe.'));
     }
     
     public function recuperarAction()
@@ -162,6 +163,8 @@ class LoginController extends Controller
     
     public function sairAction()
     {
+        session_start();
+        session_destroy();
         //$this->loginDAO->deslogar(Session::getLogin());
         //Session::clear();
     }
