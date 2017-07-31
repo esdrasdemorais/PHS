@@ -1,4 +1,4 @@
-<form method="post" title="CadastroServico" action="#url#/index.php/servico/salvar" id="cad_servico">
+<form method="post" title="CadastroServico" action="#url#/index.php/servico/salvar/tipo/#tipo#" id="cad_servico">
     <input type="hidden" name="id" value="#id#" />
     <label>Data do Agendamento:</label>
     <input type="date" name="ser_data" value="#data#" title="Informe uma data." x-moz-errormessage="Informe uma data." min="2017-07-30" required placeholder="Informe a data."/>

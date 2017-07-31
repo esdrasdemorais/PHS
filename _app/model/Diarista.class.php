@@ -5,6 +5,12 @@
  * Descrição
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
-class Diarista extends Servico {
-//put your code here
+class Diarista extends Servico 
+{
+    private $tipo = ServicoTipo::Diarista;
+    
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
 }
