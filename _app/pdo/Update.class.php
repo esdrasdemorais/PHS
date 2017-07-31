@@ -96,7 +96,7 @@ class Update extends Conn {
             $this->Result = true;
         } catch (PDOException $e) {
             $this->Result = null;
-            WSErro("<b>Erro ao Ler:</b> {$e->getMessage()}", $e->getCode());
+            SSErro("<b>Erro ao Ler:</b> {$e->getMessage()}", $e->getCode());
         }
     }
 

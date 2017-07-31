@@ -66,7 +66,7 @@ class Delete extends Conn {
             $this->Result = true;
         } catch (PDOException $e) {
             $this->Result = null;
-            WSErro("<b>Erro ao Deletar:</b> {$e->getMessage()}", $e->getCode());
+            SSErro("<b>Erro ao Deletar:</b> {$e->getMessage()}", $e->getCode());
         }
     }
 

@@ -15,7 +15,8 @@ abstract class Servico
     protected $valorTotal;
     protected $enderecos;
     protected $cliente;
-    
+    protected $emailEnviado;
+            
     function getId() {
         return $this->id;
     }
@@ -79,4 +80,14 @@ abstract class Servico
     function getCustoHora() {
         return $this->valorTotal;
     }
+    
+    function getEmailEnviado() {
+        return $this->emailEnviado;
+    }
+
+    function setEmailEnviado($emailEnviado) {
+        $this->emailEnviado = $emailEnviado;
+    }
+
+
 }

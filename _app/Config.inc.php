@@ -29,14 +29,14 @@ function __autoload($Class)
 
 // TRATAMENTO DE ERROS #####################
 //CSS constantes :: Mensagens de Erro
-define('WS_ACCEPT', 'accept');
-define('WS_INFOR', 'infor');
-define('WS_ALERT', 'alert');
-define('WS_ERROR', 'error');
+define('SS_ACCEPT', 'accept');
+define('SS_INFOR', 'infor');
+define('SS_ALERT', 'alert');
+define('SS_ERROR', 'error');
 
-//WSErro :: Exibe erros lançados :: Front
-function WSErro($ErrMsg, $ErrNo, $ErrDie = null) {
-    $CssClass = ($ErrNo == E_USER_NOTICE ? WS_INFOR : ($ErrNo == E_USER_WARNING ? WS_ALERT : ($ErrNo == E_USER_ERROR ? WS_ERROR : $ErrNo)));
+//SSErro :: Exibe erros lançados :: Front
+function SSErro($ErrMsg, $ErrNo, $ErrDie = null) {
+    $CssClass = ($ErrNo == E_USER_NOTICE ? SS_INFOR : ($ErrNo == E_USER_WARNING ? SS_ALERT : ($ErrNo == E_USER_ERROR ? SS_ERROR : $ErrNo)));
     echo "<p class=\"trigger {$CssClass}\">{$ErrMsg}<span class=\"ajax_close\"></span></p>";
 
     if ($ErrDie):
@@ -46,7 +46,7 @@ function WSErro($ErrMsg, $ErrNo, $ErrDie = null) {
 
 //PHPErro :: personaliza o gatilho do PHP
 function PHPErro($ErrNo, $ErrMsg, $ErrFile, $ErrLine) {
-    $CssClass = ($ErrNo == E_USER_NOTICE ? WS_INFOR : ($ErrNo == E_USER_WARNING ? WS_ALERT : ($ErrNo == E_USER_ERROR ? WS_ERROR : $ErrNo)));
+    $CssClass = ($ErrNo == E_USER_NOTICE ? SS_INFOR : ($ErrNo == E_USER_WARNING ? SS_ALERT : ($ErrNo == E_USER_ERROR ? SS_ERROR : $ErrNo)));
     echo "<p class=\"trigger {$CssClass}\">";
     echo "<b>Erro na Linha: #{$ErrLine} ::</b> {$ErrMsg}<br>";
     echo "<small>{$ErrFile}</small>";

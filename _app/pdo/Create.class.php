@@ -67,7 +67,7 @@ class Create extends Conn {
             $this->Result = $this->Conn->lastInsertId();
         } catch (PDOException $e) {
             $this->Result = null;
-            WSErro("<b>Erro ao cadastrar:</b> {$e->getMessage()}", $e->getCode());
+            SSErro("<b>Erro ao cadastrar:</b> {$e->getMessage()}", $e->getCode());
         }
     }
 
