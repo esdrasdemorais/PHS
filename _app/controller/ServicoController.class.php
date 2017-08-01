@@ -63,7 +63,7 @@ class ServicoController extends Controller
             $this->enviarSucesso();
         } catch (Exception $e) {
             SSErro("Ops! Infelizmente ouve um problema. Tente novamente!", SS_ERROR);                                   
-        }    
+        } 
     }   
     
     private function salvarCuidador(){
@@ -96,8 +96,8 @@ class ServicoController extends Controller
         }    
     }  
 
-    private function enviarEmail($arSender,$arReciver,$servico) 
-    {            
+    private function enviarEmail($servico) 
+    {
         require_once __DIR__ . '/../vendor/PHPMailer/PHPMailerAutoload.php';
         $mail = new PHPMailer();$mail->SMTPDebug = 3;$mail->setLanguage('pt_br', '/optional/path/to/language/directory/');
         $mail->isSMTP();                                      // Set mailer to use SMTP
@@ -114,14 +114,16 @@ class ServicoController extends Controller
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = 'Terceiro Elemento - Solicitação de Serviço de' . ucfirst($servico->getTipo()) ;
         $mail->Body    = 'Foi solicitado o serviço de '. ucfirst($servico->getTipo()) . ', para cliente abaixo:'
-                         .'<br> Nome: ' . $servico->getCliente()->getNome()
-                         .'<br> Endereço: ' . $servico->getEndereco()->getLogradouro() . ', '
-                         . $servico->getEndereco()->getNumero() . ', '. $servico->getEndereco()->getComplemento()
-                         . ', '. $servico->getEndereco()->getBairro()
-                         . ', ' . $servico->getEndereco()->getCidade() . '-' . $servico->getEndereco()->getEstado()
-                         .'<br> Data do Agendamento: ' . $servico->getData()
-                         .'<br> Horário: ' .  $servico->getHora()
-                         .'<br> Periodo: ' . $servico->getPeriodo();
+            .'<br> Nome: ' . $servico->getCliente()->getNome()
+            .'<br> Endereço: ' . $servico->getEndereco()->getLogradouro() . ', '
+            . $servico->getEndereco()->getNumero() . ', '
+            . $servico->getEndereco()->getComplemento()
+            . ', '. $servico->getEndereco()->getBairro()
+            . ', ' . $servico->getEndereco()->getCidade() . '-' 
+            . $servico->getEndereco()->getEstado()
+            .'<br> Data do Agendamento: ' . $servico->getData()
+            .'<br> Horário: ' .  $servico->getHora()
+            .'<br> Periodo: ' . $servico->getPeriodo();
         if (false === $mail->send()) {           
             return true;
         }    
@@ -130,7 +132,7 @@ class ServicoController extends Controller
 
     private function enviarSucesso(){
         $mensagem = 'Sua solicitação de ' . $this->getParams()['tipo'] . 'está concluída.'
-                . '<br> Aguarde contato para confirmação!';
+            . '<br> Aguarde contato para confirmação!';
         $arrDados = array('titulo'=>'SUCESSO!!!', 'servicos'=> $mensagem);
-    }  
+    }
 }
