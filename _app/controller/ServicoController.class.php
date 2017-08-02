@@ -36,7 +36,7 @@ class ServicoController extends Controller
     }
     
     public function salvarAction()
-    {
+    {        
         $tipo = $this->getParams()['tipo'];
         switch ($tipo){
             case 'baba': 
@@ -54,7 +54,7 @@ class ServicoController extends Controller
     private function salvarBaba(){
         try{
             $this->BabaDAO = new BabaDAO();   
-            $this->Baba = $this->BabaDAO->setServico($this->getParams());
+            $this->Baba = $this->BabaDAO->setServico($this->getRequest());            
             $this->BabaDAO->salvar($this->Baba);            
             if(true === $this->enviarEmail($this->Baba)){
                 $this->Baba->setEmailEnviado('S');
@@ -69,7 +69,7 @@ class ServicoController extends Controller
     private function salvarCuidador(){
         try{
             $this->CuidadorDAO = new CuidadorDAO();   
-            $this->Cuidador = $this->CuidadorDAO->setServico($this->getParams());
+            $this->Cuidador = $this->CuidadorDAO->setServico($this->getRequest());
             $this->CuidadorDAO->salvar($this->Cuidador);            
             if(true === $this->enviarEmail($this->Cuidador)){
                 $this->Cuidador->setEmailEnviado('S');
@@ -84,7 +84,7 @@ class ServicoController extends Controller
     private function salvarDiarista(){
         try{
             $this->DiaristaDAO = new DiaristaDAO();   
-            $this->Diarista = $this->DiaristaDAO->setServico($this->getParams());
+            $this->Diarista = $this->DiaristaDAO->setServico($this->getRequest());            
             $this->DiaristaDAO->salvar($this->Diarista);            
             if(true === $this->enviarEmail($this->Diarista)){
                 $this->Diarista->setEmailEnviado('S');

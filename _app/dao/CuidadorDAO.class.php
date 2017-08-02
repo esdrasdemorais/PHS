@@ -1,8 +1,8 @@
 <?php
 
-namespace _app\DAO;
-
-use _app\Model\Cuidador as Cuidador;
+//namespace _app\DAO;
+//
+//use _app\Model\Cuidador as Cuidador;
 
 /**
  * CuidadorDAO.class.php [ TIPO ]
@@ -38,19 +38,17 @@ class CuidadorDAO
         return $arrCuidador;
     }
     
-    private function setServico(array $servico)
+    public function setServico(array $servico)
     {
         $cuidador = new Cuidador();
         $cuidador->setId($servico['id']);
         $cuidador->setData($servico['data']);
         $cuidador->setHora($servico['hora']);
         $cuidador->setPeriodo($servico['periodo']);
-        $cuidador->setValorHora($servico['valorhora']);
-        $cuidador->setValorTotal($servico['valortotal']);
         $endereco = new EnderecoDAO();           
         $cuidador->setEndereco($endereco->listar($servico['endereco_id'])[0]);               
         $cliente = new ClienteDAO();           
-        $cuidador->setCliente($cliente->listar($servico['cliente_id'])[0]);                       
+        $cuidador->setCliente($cliente->listar(Session::get('cliente_id'))[0]);                       
         return $cuidador;
     }
       
@@ -59,9 +57,11 @@ class CuidadorDAO
           $create = new Create();
                     
           try{
-            $arrcuidador = (array)$cuidador;
+            $arrcuidador = array('data'=>$cuidador->getData(),
+                'hora'=>$cuidador->getHora(),'periodo'=>$cuidador->getPeriodo(),
+                'cliente_id'=>$cuidador->getCliente()->getId());
             $arrcuidador['tipo'] = ServicoTipo::Cuidador;
-            $create->ExeCreate('cuidador', $arrcuidador);
+            $create->ExeCreate('servico', $arrcuidador);
             if(is_numeric($create->getResult())){
                 $cuidador->setId($create->getResult());
                 return $cuidador;
@@ -69,7 +69,8 @@ class CuidadorDAO
                 throw new Exception('Não foi possível realizar seu cadastro.');
             }
           } catch (Exception $ex) {
-              PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
+                PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                    $ex->getLine());                                   
           }
       }
       

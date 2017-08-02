@@ -23,18 +23,23 @@ class SessionManagement
     {
 	$loginDAOName = 'Login' . ucfirst($this->tipo) . 'DAO';
 	$loginDAO = new $loginDAOName();
-	$login = $loginDAO->searchByCookie($cookie)[0];
+	$arrLogin = $loginDAO->searchByCookie($cookie);
+        $login = $loginDAO->setLogin($arrLogin[0]);
 	$this->session->criar($login);
     }
 
     public static function persist($tipo)
     {
         //session_start();
-	if (true === Session::checkSession()
-            || true === Cookie::isCreated())
-        {
-	    $sessionManagement = new SessionManagement(new Session(), $tipo);
-	    $sessionManagement->createSessionFromCookie(new Cookie());
+	if (true === Session::checkSession()) {
+            return true;
+        }
+        if (true === Cookie::isCreated()) {
+            $loginName = 'Login' . ucfirst($tipo);
+            $login = new $loginName();
+	    $sessionManagement = new SessionManagement(new Session($tipo, $login), $tipo);
+	    $sessionManagement->createSessionFromCookie(new Cookie($tipo));
+            return true;
 	}
 	return false;
     }

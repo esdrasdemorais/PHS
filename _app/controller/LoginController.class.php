@@ -42,7 +42,7 @@ class LoginController extends Controller
 
         $usuarioFacade = new UsuarioFacade($this->getParams()['tipo']);
         $login = $usuarioFacade->inicializar($this->loginModel);
-
+        
         if (true === ($login instanceof $loginModelName)) {
             $this->redirect($this->getBaseUrl().'/index.php/servico');
             return;

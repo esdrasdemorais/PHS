@@ -48,12 +48,10 @@ class BabaDAO
         $baba->setData($servico['data']);
         $baba->setHora($servico['hora']);
         $baba->setPeriodo($servico['periodo']);
-        $baba->setValorHora($servico['valorhora']);
-        $baba->setValorTotal($servico['valortotal']);
         $endereco = new EnderecoDAO();           
         $baba->setEndereco($endereco->listar($servico['endereco_id'])[0]);               
         $cliente = new ClienteDAO();           
-        $baba->setCliente($cliente->listar($servico['cliente_id'])[0]);                       
+        $baba->setCliente($cliente->listar(Session::get('cliente_id'))[0]);                       
         return $baba;
     }
       
@@ -62,9 +60,10 @@ class BabaDAO
         $create = new Create();
 
         try {
-            $arrbaba = (array)$baba;
+            $arrbaba = array('data'=>$baba->getData(),'hora'=>$baba->getHora(),
+                'periodo'=>$baba->getPeriodo(),'cliente_id'=>$baba->getCliente()->getId());
             $arrbaba['tipo'] = ServicoTipo::Baba;
-            $create->ExeCreate('baba', $arrbaba);
+            $create->ExeCreate('servico', $arrbaba);
             if (is_numeric($create->getResult())) {
                 $baba->setId($create->getResult());
                 return $baba;

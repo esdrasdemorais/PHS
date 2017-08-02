@@ -47,7 +47,7 @@ class LoginClienteDAO extends Object implements LoginStrategy
     {
         $read = new Read();
         if (true === $this->isLoged($login)) {
-            return true;
+            return $login;
         }
         $read->ExeRead('login', 'where login=:login and senha=:senha', 
         'login=' . $login->getLogin() . '&senha=' . sha1($login->getSenha()));
@@ -79,7 +79,7 @@ class LoginClienteDAO extends Object implements LoginStrategy
     {
         $update = new Update();
         $arrLogin = array(
-            "login"=>$login->getLogin(), "senha"=>sha1($login->getSenha()),
+            //"login"=>$login->getLogin(), "senha"=>sha1($login->getSenha()),
             "logado"=>$login->getLogado(),
             "data_ultimo_acesso"=>$login->getDataUltimoAcesso(),
             "cookie_hash"=>$login->getCookieHash());
@@ -115,8 +115,9 @@ class LoginClienteDAO extends Object implements LoginStrategy
     public function searchByCookie(Cookie $cookie)
     {
 	$read = new Read();
-	$hash = $cookie->get(static::$cookieName);
-        $read->ExeRead('login', 'where cookie_hash=:cookie', 'cookie='.$hash);
+	$cookieHash = $cookie->get(Cookie::$cookieName);
+        $read->ExeRead('login', 'where cookie_hash=:cookie', 'cookie=' . 
+            $cookieHash);
         
         return $read->getResult();
     }

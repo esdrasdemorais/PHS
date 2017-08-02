@@ -12,3 +12,9 @@
 header, section, footer, aside, nav, main, article, figure {
     display: block;
 }
+
+.form-group { color:#337ab7 !important; }
+
+input { padding: 0.5em; }
+
+form { margin: 0.7em }

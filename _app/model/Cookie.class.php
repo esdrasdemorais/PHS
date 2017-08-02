@@ -5,14 +5,14 @@ class Cookie extends Object
     protected $loginModel;
     protected $loginDAO;
     
-    protected static $cookieName = 'cookusuario';
+    public static $cookieName = 'cookusuario';
     
     public function __construct($tipo)
     {
 	$this->tipo = $tipo;
         
-	$loginModelName = 'Login' . ucfirst($tipo);
-	$this->loginModel = new $loginModelName();
+	//$loginModelName = 'Login' . ucfirst($tipo);
+	//$this->loginModel = new $loginModelName();
         
         $loginDAOName = 'Login' . ucfirst($tipo) . 'DAO';
         $this->loginDAO = new $loginDAOName();
@@ -21,7 +21,7 @@ class Cookie extends Object
     public function criar($login)
     {
         $this->loginModel = $login;
-        if (is_object($login)) {
+        if (is_object($this->loginModel)) {
             $valor = hash('sha512', $this->loginModel->getLogin());
             $this->set(static::$cookieName, $valor);
 
@@ -32,7 +32,7 @@ class Cookie extends Object
 
     public function set($chave, $valor)
     {
-        setcookie($chave, $valor, time() + 60 * 60 * 24 * 366 * 10,
+        setcookie($chave, $valor, time() + 60 * 60 * 24 * 366 * 10, 
             '/', '', true, true);
     }
 

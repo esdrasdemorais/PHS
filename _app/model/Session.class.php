@@ -7,14 +7,14 @@
 class Session extends Object implements SessionHandlerInterface
 {
     protected $loginDAO;
-    private   $loginModel;
+    //private   $loginModel;
     private   $sessionHandler;
     
     public function __construct($tipo, $login)
     {
         $loginDAOName = is_null($tipo) ? null : 'Login'.ucfirst($tipo).'DAO';
 	$this->loginDAO = new $loginDAOName();
-	$this->loginModel = $login;
+	//$this->loginModel = $login;
 
         $this->sessionHandler = new SessionHandler();
 	$this->salvar();

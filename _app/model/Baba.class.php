@@ -11,6 +11,6 @@ class Baba extends Servico
     
     public function getTipo()
     {
-        return $this->tipotipo;
+        return $this->tipo;
     }
 }

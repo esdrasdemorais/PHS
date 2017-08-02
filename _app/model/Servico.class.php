@@ -33,8 +33,8 @@ abstract class Servico
         $this->id = $id;
     }
 
-    function setEndereco(array $enderecos) {
-        $this->enderecos = $enderecos;
+    function setEndereco($endereco) {
+        $this->enderecos = $endereco;
     }
 
     function setCliente(Cliente $cliente) {

@@ -1,8 +1,8 @@
 <?php
 
-namespace _app\DAO;
-
-use _app\Model\Diarista as Diarista;
+//namespace _app\DAO;
+//
+//use _app\Model\Diarista as Diarista;
 
 /**
  * DiaristaDAO.class.php [ TIPO ]
@@ -38,19 +38,17 @@ class DiaristaDAO
         return $arrDiarista;
     }
     
-    private function setServico(array $servico)
+    public function setServico(array $servico)
     {
         $diarista = new Diarista();
         $diarista->setId($servico['id']);
         $diarista->setData($servico['data']);
         $diarista->setHora($servico['hora']);
         $diarista->setPeriodo($servico['periodo']);
-        $diarista->setValorHora($servico['valorhora']);
-        $diarista->setValorTotal($servico['valortotal']);
         $endereco = new EnderecoDAO();           
         $diarista->setEndereco($endereco->listar($servico['endereco_id'])[0]);               
         $cliente = new ClienteDAO();           
-        $diarista->setCliente($cliente->listar($servico['cliente_id'])[0]);                       
+        $diarista->setCliente($cliente->listar(Session::get('cliente_id'))[0]);                       
         return $diarista;
     }
       
@@ -59,9 +57,10 @@ class DiaristaDAO
         $create = new Create();
 
         try{
-          $arrdiarista = (array)$diarista;
+          $arrdiarista = array('data'=>$diarista->getData(),'hora'=>$diarista->getHora(),
+                'periodo'=>$diarista->getPeriodo(),'cliente_id'=>$diarista->getCliente()->getId());
           $arrdiarista['tipo'] = ServicoTipo::Diarista;
-          $create->ExeCreate('diarista', $arrdiarista);
+          $create->ExeCreate('servico', $arrdiarista);
           if(is_numeric($create->getResult())){
               $diarista->setId($create->getResult());
               return $diarista;
