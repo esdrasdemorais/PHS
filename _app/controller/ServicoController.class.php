@@ -116,7 +116,7 @@ class ServicoController extends Controller
         $mail->Body    = 'Foi solicitado o serviço de '. ucfirst($servico->getTipo()) . ', para cliente abaixo:'
                          .'<br> Nome: ' . $servico->getCliente()->getNome()
                          .'<br> Endereço: ' . $servico->getEndereco()->getLogradouro() . ', '
-                         . $servico->getEndereco()->getNumero() . ', '. $servico->getEndereco()->getComplemento()
+                         . $servico->getEndereco()->getNumero() . ', '//. $servico->getEndereco()->getComplemento()
                          . ', '. $servico->getEndereco()->getBairro()
                          . ', ' . $servico->getEndereco()->getCidade() . '-' . $servico->getEndereco()->getEstado()
                          .'<br> Data do Agendamento: ' . $servico->getData()

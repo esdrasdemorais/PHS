@@ -13,8 +13,19 @@ header, section, footer, aside, nav, main, article, figure {
     display: block;
 }
 
-.form-group { color:#337ab7 !important; }
+.form-group { color: #337ab7 !important; }
 
-input { padding: 0.5em; }
+#cad_cliente, #cad_servico { 
+    margin: 1.7em; max-width: 377px; margin: 1.7em auto;
+}
 
-form { margin: 0.7em }
+a:hover { text-decoration: underline; }
+
+#selecionar { max-width:777px; margin:1.7em auto; }
+#selecionar section { float:left; }
+#selecionar a { float:left; border-radius: 0.7em; }
+#selecionar a:hover { border: 1px solid #337ab7; }
+
+@media only screen and (max-width: 377px) {
+    #selecionar section a img { margin-left: 37px; width: 57%; text-align: center; }
+}

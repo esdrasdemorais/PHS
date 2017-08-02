@@ -13,7 +13,7 @@ abstract class Servico
     protected $periodo;
     protected $valorHora;
     protected $valorTotal;
-    protected $enderecos;
+    protected $endereco;
     protected $cliente;
     protected $emailEnviado;
             
@@ -34,7 +34,7 @@ abstract class Servico
     }
 
     function setEndereco($endereco) {
-        $this->enderecos = $endereco;
+        $this->endereco = $endereco;
     }
 
     function setCliente(Cliente $cliente) {

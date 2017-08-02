@@ -2,7 +2,8 @@
     h5, a, .form-group { color:#337ab7 !important; }
 </style>
 <form method="post" title="login #tipo#" id="cad_#tipo#"
-    action="#url#/index.php/login/logar/tipo/#tipo#">
+    action="#url#/index.php/login/logar/tipo/#tipo#" 
+    style="max-width:377px; margin:1.7em auto">
     
     <input type="hidden" name="id" value="#id#" />    
     
@@ -27,5 +28,10 @@
     <input type="submit" name="ok" value="OK" class="btn btn-primary" />
     <br>
     
-    <h5>Não tem cadastro? <a href="#url#/index.php/#tipo#">Cadastre-se</a></h5>
+    <h5>
+        Não tem cadastro?
+        <a href="#url#/index.php/#tipo#">
+            <strong>Cadastre-se</strong>
+        </a>
+    </h5>
 </form>
