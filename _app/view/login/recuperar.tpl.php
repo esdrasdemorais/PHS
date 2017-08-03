@@ -3,13 +3,14 @@
     
     <input type="hidden" name="id" value="#id#" />
     
-    <label>E-mail:</label>
-    <input type="email" name="email" maxlength="170" value="#email#" 
-        required title="Informe um email válido." 
-        x-moz-errormessage="Informe um email válido." />
-    <br>
+    <div class="form-group">
+        <label>E-mail:</label>
+        <input type="email" name="email" maxlength="170" value="#email#" 
+            required title="Informe um email válido." class="form-control" 
+            x-moz-errormessage="Informe um email válido." />
+    </div>
     
     <article style="color:red;font-weight:bold;">#msg#<article>
     
-    <input type="submit" name="ok" value="OK" />
+    <input type="submit" name="ok" value="OK" class="btn btn-primary" />
 </form>

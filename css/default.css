@@ -15,7 +15,7 @@ header, section, footer, aside, nav, main, article, figure {
 
 .form-group { color: #337ab7 !important; }
 
-#cad_cliente, #cad_servico { 
+#cad_cliente, #cad_servico, #login_cliente { 
     max-width: 377px; margin: 1.7em auto;
 }
 
