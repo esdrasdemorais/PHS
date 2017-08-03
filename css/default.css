@@ -16,16 +16,18 @@ header, section, footer, aside, nav, main, article, figure {
 .form-group { color: #337ab7 !important; }
 
 #cad_cliente, #cad_servico { 
-    margin: 1.7em; max-width: 377px; margin: 1.7em auto;
+    max-width: 377px; margin: 1.7em auto;
 }
 
 a:hover { text-decoration: underline; }
 
-#selecionar { max-width:777px; margin:1.7em auto; }
+#selecionar { max-width:777px; margin: 0 auto; }
 #selecionar section { float:left; }
 #selecionar a { float:left; border-radius: 0.7em; }
 #selecionar a:hover { border: 1px solid #337ab7; }
 
 @media only screen and (max-width: 377px) {
-    #selecionar section a img { margin-left: 37px; width: 57%; text-align: center; }
+    #selecionar section a img { 
+        margin-left: 67px; width: 47%; text-align: center;
+    }
 }
