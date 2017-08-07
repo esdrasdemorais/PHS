@@ -1,84 +1,89 @@
 <?php
 
 /**
- * ServicoEnderecoDAO [ TIPO ]
+ * ServicoDescricaoDAO [ TIPO ]
  * Descrição
- * @copyright (c) year, Victor Hugo Garcia Caetano - SP
+ * @copyright (c) year, Esdras de Morais da Silva - SP
  */
-class ServicoEnderecoDAO {
-    public function alterar(ServicoEndereco $endereco)
+class ServicoDescricaoDAO
+{
+    public function alterar(ServicoDescricao $servicoDescricao)
     {
         $update = new Update();
-
         try {
-          $update->ExeUpdate("endereco", (array)$endereco, 'where id=:id', ':id='.$endereco->getId());
-          //return $endereco;
+            $arrServicoDescricao = array('descricao_id'=>
+            $servicoDescricao->getDescricao(), 'servico_id'=>
+            $servicoDescricao->getServico());
+            $update->ExeUpdate("servico_descricao", $arrServicoDescricao, 
+                'where id=:id', ':id='.$servicoDescricao->getId());
+            return $servicoDescricao;
         } catch (Exception $ex) {  
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine()); 
         }
     }
 
-    public function listar()
+    public function listar($id = null)
     {
-        $arrServicoEndereco = array();
+        $arrServicoDescricao = array();
 
         $read = new Read();
-        $read->ExeRead('endereco');
-
-        foreach($read->getResult() as $end) {
-            $arrServicoEndereco[] = $this->setServicoEndereco($end);
+        if (is_numeric($id)) {
+            $read->ExeRead('cliente', 'where id=:id', 'id=' . $id);
+        } else {
+            $read->ExeRead('servico_descricao');
         }
-
-        return $arrServicoEndereco;
+        foreach($read->getResult() as $end) {
+            $arrServicoDescricao[] = $this->setServicoDescricao($end);
+        }
+        return $arrServicoDescricao;
     }
     
-    private function setServicoEndereco(array $end)
+    private function setServicoDescricao(array $end)
     {
-        $endereco = new ServicoEndereco();
-        $endereco->setId($end['id']);
-        $endereco->setLogradouro($end['logradouro']);
-        $endereco->setBairro($end['bairro']);
-        $endereco->setCidade($end['cidade']);
-        $endereco->setEstado($end['estado']);
-        $endereco->setCep($end['cep']);
-
-        $readServicoEndereco = new Read();
-        $readServicoEndereco->ExeRead('endereco', 'where id=:id', ':id = ' . $end['endereco_id']); 
-
-        return $readServicoEndereco->getResult()[0];
+        $servicoDescricao = new ServicoDescricaoDAO();
+        $servicoDescricao->setId($end['id']);
+        $servicoDescricao->setDescricao($end['descricao_id']);
+        $servicoDescricao->setServicoDescricao($end['servico_id']);
+        return $servicoDescricao;
     }
 
-    public function salvar(ServicoEndereco $endereco)
+    public function salvar(ServicoDescricao $servicoDescricao)
     {
         $create = new Create();
-
         try{
-          $create->ExeCreate('endereco', (array)$endereco);
-          if(is_numeric($create->getResult())){
-              $endereco->setId($create->getResult());
-              return $endereco;
-          } else{
-              throw new Exception('Não foi possível realizar seu cadastro.');
-          }
+            $arrServicoDescricao = array('descricao_id'=>
+            $servicoDescricao->getDescricao(), 'servico_id'=>
+            $servicoDescricao->getServico());
+            $create->ExeCreate('servico_descricao', $arrServicoDescricao);
+            if(is_numeric($create->getResult())){
+                $servicoDescricao->setId($create->getResult());
+                return $servicoDescricao;
+            } else{
+                throw new Exception('Não foi possível realizar seu cadastro.');
+            }
         } catch (Exception $ex) {
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine());                                   
         }
     }
 
-    public function deletar(ServicoEndereco $endereco)
+    public function deletar(ServicoDescricao $servicoDescricao)
     {
         $delete = new Delete();
 
         try {
-            $delete->ExeDelete('endereco', 'where id= :id', ':id='.$endereco->getId());
+            $delete->ExeDelete('servico_descricao', 'where id= :id', 
+                'id='.$servicoDescricao->getId());
             if($delete->getResult() === true){
                 return "Endereço removido com sucesso!";      
             } else {
-                throw new Exception("Não foi possível remover o endereco.");
+                throw new Exception("Erro ao remover o Descrição do Serviço.");
             }
 
         } catch (Exception $ex) {
-               PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
+                $ex->getLine()); 
         }
 
     }

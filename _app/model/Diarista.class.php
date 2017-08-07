@@ -5,7 +5,7 @@
  * Descrição
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
-class Diarista extends Servico 
+class Diarista extends ServicoAgendamento
 {
     private $tipo = ServicoTipo::Diarista;
     

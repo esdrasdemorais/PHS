@@ -5,7 +5,7 @@
  * Descrição
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
-class Baba extends Servico
+class Baba extends ServicoAgendamento
 {
     private $tipo = ServicoTipo::Baba;
     

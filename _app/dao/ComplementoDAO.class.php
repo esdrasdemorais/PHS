@@ -1,8 +1,8 @@
 <?php
 
-namespace _app\dao;
-
-use _app\Model\Complemento as Complemento;
+//namespace _app\dao;
+//
+//use _app\Model\Complemento as Complemento;
 
 /**
  * ComplementoDAO.class.php [ TIPO ]

@@ -37,7 +37,8 @@ class SessionManagement
         if (true === Cookie::isCreated()) {
             $loginName = 'Login' . ucfirst($tipo);
             $login = new $loginName();
-	    $sessionManagement = new SessionManagement(new Session($tipo, $login), $tipo);
+	    $sessionManagement = new SessionManagement(
+                new Session($tipo, $login), $tipo);
 	    $sessionManagement->createSessionFromCookie(new Cookie($tipo));
             return true;
 	}

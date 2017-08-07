@@ -95,3 +95,20 @@ CREATE TABLE login (
 );
 
 CREATE UNIQUE INDEX un_ix_login ON login (login);
+
+CREATE TABLE descricao (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(177) NOT NULL,
+    status CHAR(1) NOT NULL DEFAULT 1
+);
+
+CREATE UNIQUE INDEX un_ix_descricao ON descricao (nome);
+
+CREATE TABLE servico_descricao (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    servico_id INT UNSIGNED NOT NULL,
+    descricao_id INT UNSIGNED NOT NULL
+);
+
+CREATE UNIQUE INDEX un_ix_servico_descricao ON servico_descricao (servico_id,
+    descricao_id);
