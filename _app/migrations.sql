@@ -35,18 +35,6 @@ CREATE TABLE cliente (
 
 CREATE UNIQUE INDEX un_ix_cliente ON cliente (email);
 
-CREATE TABLE servico (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    tipo CHAR(1) NOT NULL DEFAULT 3,
-    data DATE NOT NULL,
-    hora TIME NOT NULL,
-    periodo VARCHAR(70) NOT NULL,
-    valorHora FLOAT NOT NULL,
-    valorTotal FLOAT NOT NULL,
-    cliente_id INT UNSIGNED NOT NULL,
-    emailEnviado CHAR(1) NOT NULL DEFAULT 'N'
-);
-
 CREATE TABLE complemento (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     complemento VARCHAR(177) NOT NULL UNIQUE
@@ -112,3 +100,27 @@ CREATE TABLE servico_descricao (
 
 CREATE UNIQUE INDEX un_ix_servico_descricao ON servico_descricao (servico_id,
     descricao_id);
+
+CREATE TABLE servico (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(177) NOT NULL,
+    status CHAR(1) NOT NULL DEFAULT '1',
+    icon VARCHAR(47) NOT NULL,
+    valorHora FLOAT NOT NULL
+);
+
+CREATE TABLE servico_agendamento (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tipo CHAR(1) NOT NULL DEFAULT 3,
+    data DATE NOT NULL,
+    hora TIME NOT NULL,
+    periodo VARCHAR(70) NOT NULL,
+    valorTotal FLOAT NOT NULL,
+    cliente_id INT UNSIGNED NOT NULL,
+    emailEnviado CHAR(1) NOT NULL DEFAULT 'N',
+    servico_id INT UNSIGNED NOT NULL
+);
+
+CREATE UNIQUE INDEX un_ix_servico_agendamento ON servico_agendamento (
+    cliente_id, servico_id, data, hora
+);

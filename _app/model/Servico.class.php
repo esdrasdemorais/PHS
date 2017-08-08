@@ -10,6 +10,7 @@ class Servico
     private $nome;
     private $status = 1;
     private $icon;
+    protected $valorHora;
     
     public function getId() {
         return $this->id;
@@ -27,6 +28,10 @@ class Servico
         return $this->icon;
     }
     
+    function getValorHora() {
+        return $this->valorHora;
+    }
+    
     public function setId($id) {
         $this->id = $id;
     }
@@ -41,5 +46,9 @@ class Servico
     
     public function setIcon($icon) {
         $this->icon = $icon;
+    }
+    
+    function setValorHora($valorHora) {
+        $this->valorHora = $valorHora;
     }
 }

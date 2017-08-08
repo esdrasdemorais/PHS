@@ -5,13 +5,12 @@
  * Descrição
  * @copyright (c) year, Victor Hugo Garcia Caetano - SP
  */
-abstract class ServicoAgendamento
+class ServicoAgendamento
 {
     protected $id;
     protected $data;
     protected $hora;
     protected $periodo;
-    protected $valorHora;
     protected $valorTotal;
     protected $endereco;
     protected $cliente;
@@ -43,7 +42,8 @@ abstract class ServicoAgendamento
     }
     
     private function setCustoHora() {
-        $this->valorTotal = $this->hora * $this->valorHora;
+        $servico = $this->getServico();
+        $this->valorTotal = $this->periodo * $servico->getValorHora();
     }
     
     function getData() {
@@ -57,11 +57,7 @@ abstract class ServicoAgendamento
     function getPeriodo() {
         return $this->periodo;
     }
-
-    function getValorHora() {
-        return $this->valorHora;
-    }
-
+    
     public function getServico() {
         return $this->servico;
     }
@@ -78,10 +74,6 @@ abstract class ServicoAgendamento
         $this->periodo = $periodo;
     }
 
-    function setValorHora($valorHora) {
-        $this->valorHora = $valorHora;
-    }
-
     function getCustoHora() {
         return $this->valorTotal;
     }
@@ -94,7 +86,7 @@ abstract class ServicoAgendamento
         $this->emailEnviado = $emailEnviado;
     }
     
-    public function setServico($servico) {
+    public function setServico(Servico $servico) {
         $this->servico = $servico;
     }
 }

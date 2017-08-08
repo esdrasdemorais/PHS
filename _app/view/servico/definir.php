@@ -2,7 +2,7 @@
 $script='<script type="text/javascript" src="' . $array["url"] . 
         '/js/endereco.js"></script><script type="text/javascript" src="' . 
         $array["url"] . '/js/servico.js"></script>';
-$cabecalho = array("title"=>"Cadastro de Serviço","includes"=>$script);
+$cabecalho = array("title"=>"Agendamento de Serviço","includes"=>$script);
 $cabecalho = array_merge($cabecalho, $array);
 View::Load('view/cabecalho');
 View::Show($cabecalho);
