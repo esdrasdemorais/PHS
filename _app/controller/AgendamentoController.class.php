@@ -4,7 +4,7 @@
  *
  * @author esdrassilva
  */
-class AgendamentoController
+class AgendamentoController extends Controller
 {
     protected $servico;
     protected $servicoDAO;
@@ -30,7 +30,8 @@ class AgendamentoController
     {
         $tipo = $this->getParams()['tipo'];
         $arrDados = array('url'=>$this->getBaseUrl(), 'id'=>'','data'=>'',
-            'hora'=>'','periodo'=>'','endereco'=>'','tipo'=>$tipo);
+            'hora'=>'','periodo'=>'','endereco'=>'','tipo'=>$tipo,'minDate'=>
+            date('d') + 1 . date('/m/Y'));
         View::render('view/servico/definir', $arrDados);
     }
 

@@ -24,7 +24,7 @@ class UsuarioFacade
     
     public function inicializar($log)
     {
-	$loginContext = new LoginContext($this->loginDAO);
+	$loginContext = new LoginContext($this->loginDAO);        
         $login = $loginContext->autenticarStrategy($log);
         
 	$this->session = new Session($this->tipo, $login);

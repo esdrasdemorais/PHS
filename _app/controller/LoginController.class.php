@@ -24,8 +24,19 @@ class LoginController extends Controller
         $this->loginModel = new $loginModelName();
         
 	if (true === SessionManagement::persist($this->tipo)) {
-            $this->redirect($this->getBaseUrl() . '/index.php/servico');
+            $this->redirect($this->getBaseUrl() . $this->getRoute());
         }
+    }
+    
+    private function getRoute()
+    {
+        $route = '/index.php/agendamento';
+        switch(Session::get('tipo')) {
+            case LoginTipo::ADMINISTRADOR:
+                $route = '/index.php/contrato';
+                break;
+        }
+        return $route;
     }
     
     public function indexAction()
@@ -38,13 +49,16 @@ class LoginController extends Controller
     {
         $loginModelName = 'Login' . ucfirst($this->getParams()['tipo']);
         $this->loginModel = new $loginModelName();
-        $this->loginModel = $this->loginDAO->setLogin($this->getRequest());
+        $arrDados = array_merge($this->getRequest(), array('tipo'=>$this->tipo));
+        $this->loginModel = $this->loginDAO->setLogin($arrDados);
 
         $usuarioFacade = new UsuarioFacade($this->getParams()['tipo']);
         $login = $usuarioFacade->inicializar($this->loginModel);
         
         if (true === ($login instanceof $loginModelName)) {
-            $this->redirect($this->getBaseUrl().'/index.php/servico');
+            $route = ($login->getTipo() == LoginTipo::ADMINISTRADOR) ? 
+                '/index.php/contrato' : $this->getRoute();
+            $this->redirect($this->getBaseUrl().$route);
             return;
         }
         
@@ -98,8 +112,8 @@ class LoginController extends Controller
             View::render('view/login/recuperar', array('tipo'=>$this->tipo,
                 'email'=>$email,'url'=>$this->getBaseUrl(),'id'=>'','msg'=>
                 'Email inválido.'));
-        }
             return;
+        }
         
         $this->loginModel = $this->loginDAO->checkEmail($email);
         if (!($this->loginModel instanceof $loginModelName)) {

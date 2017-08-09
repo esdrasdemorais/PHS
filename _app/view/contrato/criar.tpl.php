@@ -1,5 +1,5 @@
-<form method="post" title="CadastroServico" 
-    action="#url#/index.php/servico/salvar/tipo/#tipo#" id="cad_servico">
+<form method="post" title="Cadastro Contrato" 
+    action="#url#/index.php/contrato/salvar" id="cad_contrato">
     
     <input type="hidden" name="id" value="#id#" />
     
@@ -14,37 +14,34 @@
     </script>
 
     <div class="form-group">
-        <label>Data do Agendamento:</label>
+        <label>Número:</label>
+        <input type="text" name="numero" value="#numero#" required 
+            title="Informe o número do contrato" 
+            x-moz-errormessage="Informe o número do contrato." 
+            placeholder="Informe o número do contrato." class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Data:</label>
         <input type="date" name="data" value="#data#" title="Informe uma data." 
             x-moz-errormessage="Informe uma data." min="#minDate#" required 
             placeholder="Informe a data." class="form-control" />
     </div>
     <div class="form-group">
-        <label>Hora:</label>
-        <input type="time" name="hora" value="#hora#" required
-            title="Informe um horário." x-moz-errormessage="Informe um horário."
-            placeholder="Informe o horário." class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Período de Horas:</label>
-        <input type="number" name="periodo" value="#periodo#" 
+        <label>QTD Diárias:</label>
+        <input type="number" name="qtdDiarias" value="#qtdDiarias#" 
             title="Informe um período de horas." class="form-control"
             x-moz-errormessage="Período de horas" min="1" max="12" required 
             placeholder="Informe um período em horas." />
     </div>
     <div class="form-group">
-        <label>Endereço:</label>
-        <input type="search" name="endereco" id="endereco" value="#endereco#" 
-            placeholder="rua, número, bairro, cidade, uf, cep" required 
-            title="Informe o endereço" x-moz-errormessage="Informe o endereço"
-            class="form-control" />
-        <section id="place" 
-            style="min-width:280px;display:none;border:1px solid #000;
-            cursor:pointer;text-decoration:underline">
-        </section>
+        <label>Valor Hora:</label>
+        <input type="tel" value="#valor#" class="form-control" 
+            title="99,99 Informe um valor separado por vírgulas" 
+            x-moz-errormessage="99,99 Informe um valor separado por vírgulas"
+            required placeholder="99,99 Informe um valor separado por vírgulas"
+            formnovalidate="formnovalidate" 
+            placeholder="99,99 Informe um valor separado por vírgulas" />
     </div>
-    <input type="hidden" name="endereco_id" id="endereco_id" value="1" />
-    <input type="hidden" name="geolocalizacao" id="geolocalizacao" value="" /> 
     <br>
     <input type="submit" name="salvar" value="Salvar" class="btn btn-primary" />    
 </form>

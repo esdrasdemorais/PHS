@@ -68,7 +68,8 @@ class Session extends Object implements SessionHandlerInterface
                 "id"=>$login->getId(),
                 "tipo"=>$login->getTipo(),
                 "login"=>$login->getLogin(),
-                "cliente_id"=>$login->getCliente(),
+                "cliente_id"=>(($login->getTipo() == LoginTipo::CLIENTE) ? 
+                    $login->getTipo() : null),
                 "logado"=>$login->getLogado()
             );
             foreach($arrLogin as $chave => $valor) {

@@ -124,3 +124,13 @@ CREATE TABLE servico_agendamento (
 CREATE UNIQUE INDEX un_ix_servico_agendamento ON servico_agendamento (
     cliente_id, servico_id, data, hora
 );
+
+CREATE TABLE contrato (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    numero VARCHAR(17) NOT NULL,
+    data   DATETIME NOT NULL DEFAULT now(),
+    qtdDiarias INT NOT NULL,
+    valor FLOAT NOT NULL
+);
+
+CREATE UNIQUE INDEX un_ix_contrato ON contrato (numero);
