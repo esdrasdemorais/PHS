@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Servico.class [ TIPO ]
  * Descrição
@@ -16,6 +15,7 @@ class ServicoAgendamento
     protected $cliente;
     protected $emailEnviado;
     protected $servico;
+    protected $qtdDiarias;
     
     function getId() {
         return $this->id;
@@ -27,6 +27,10 @@ class ServicoAgendamento
 
     function getCliente() {
         return $this->cliente;
+    }
+    
+    public function getQtdDiarias() {
+        return $this->qtdDiarias;
     }
     
     function setId($id) {
@@ -88,5 +92,9 @@ class ServicoAgendamento
     
     public function setServico(Servico $servico) {
         $this->servico = $servico;
+    }
+    
+    public function setQtdDiarias($qtdDiarias) {
+        $this->qtdDiarias = $qtdDiarias;
     }
 }

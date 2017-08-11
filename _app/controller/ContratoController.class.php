@@ -6,6 +6,9 @@
  */
 class ContratoController extends Controller
 {
+    private $contrato;
+    private $contratoDAO;
+    
     public function __construct()
     {
         parent::__construct();
@@ -26,5 +29,17 @@ class ContratoController extends Controller
         $arrDados = array('url'=>$this->getBaseUrl(),'numero'=>'','qtdDiarias'=>
             '','valor'=>'','data'=>'');
         View::render('view/contrato/criar', $arrDados);
+    }
+    
+    public function salvarAction()
+    {
+        $this->contratoDAO = new ContratoDAO();
+        $this->contrato = $this->contratoDAO->setContrato($this->getRequest());
+        $contrato = $this->contratoDAO->salvar($this->contrato);
+        if ($contrato->getId() > 0) {
+            $arrCliente = array('id'=>$contrato->getId(), 'titulo'=>'Contrato',
+                'msg'=>'Contrato Salvo com Sucesso.','url'=>$this->getBaseUrl());
+            View::render('view/contrato/sucesso', $arrCliente);
+        }
     }
 }

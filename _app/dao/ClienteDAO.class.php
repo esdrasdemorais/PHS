@@ -155,4 +155,12 @@ class ClienteDAO extends Object
             'email=' . $email . '&id=' . $id);
         return count($read->getResult()) > 0 ? $read->getResult() : false;
     }
+    
+    public function hasContrato(int $id)
+    {
+        $read = new Read();
+        $read->ExeRead('cliente', 'WHERE id=:id AND contrato_id IS NOT NULL',
+            'id='.$id);
+        return true === count($read->getResult()) > 0;
+    }
 }

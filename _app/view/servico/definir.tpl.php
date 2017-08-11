@@ -1,5 +1,5 @@
-<form method="post" title="CadastroServico" 
-    action="#url#/index.php/servico/salvar/tipo/#tipo#" id="cad_servico">
+<form method="post" title="Cadastro Agendamento Serviço" 
+    action="#url#/index.php/agendamento/salvar/tipo/#tipo#" id="cad_servico">
     
     <input type="hidden" name="id" value="#id#" />
     

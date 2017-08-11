@@ -30,12 +30,12 @@
         <label>QTD Diárias:</label>
         <input type="number" name="qtdDiarias" value="#qtdDiarias#" 
             title="Informe um período de horas." class="form-control"
-            x-moz-errormessage="Período de horas" min="1" max="12" required 
+            x-moz-errormessage="Período de horas" min="1" required 
             placeholder="Informe um período em horas." />
     </div>
     <div class="form-group">
-        <label>Valor Hora:</label>
-        <input type="tel" value="#valor#" class="form-control" 
+        <label>Valor:</label>
+        <input type="tel" name="valor" value="#valor#" class="form-control" 
             title="99,99 Informe um valor separado por vírgulas" 
             x-moz-errormessage="99,99 Informe um valor separado por vírgulas"
             required placeholder="99,99 Informe um valor separado por vírgulas"

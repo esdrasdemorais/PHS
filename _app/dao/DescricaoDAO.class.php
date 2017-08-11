@@ -9,7 +9,7 @@
  * Descrição
  * @copyright (c) year, Esdras de Morais da Silva - SP
  */
-class DescricaoDAO
+class DescricaoDAO extends Object
 {
     public function alterar(Descricao $descricao)
     {
@@ -46,12 +46,21 @@ class DescricaoDAO
         
         return $arrDescricao;
     }
-      
+    
+    public function setDescricao($arrDescricao)
+    {
+        $this->descricao = new Descricao();
+        $this->descricao->setId($arrDescricao['id']);
+        $this->descricao->setNome($arrDescricao['nome']);
+        $this->descricao->setStatus($arrDescricao['status']);
+        return $this->descricao;
+    }
+    
     public function salvar(Descricao $descricao)
     {
         $create = new Create();
         try{
-            $create->ExeCreate('descricao', $descricao);
+            $create->ExeCreate('descricao', $this->toArray($descricao));
             if(is_numeric($create->getResult())){
                 $descricao->setId($create->getResult());
                 return $descricao;

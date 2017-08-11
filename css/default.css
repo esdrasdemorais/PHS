@@ -13,9 +13,9 @@ header, section, footer, aside, nav, main, article, figure {
     display: block;
 }
 
-.form-group { color: #337ab7 !important; }
+.form-group, h1, h2, h3 { color: #337ab7 !important; }
 
-#cad_cliente, #cad_servico, #login_cliente { 
+#cad_cliente, #cad_servico, #login_cliente, #cad_contrato { 
     max-width: 377px; margin: 1.7em auto;
 }
 
@@ -31,3 +31,7 @@ a:hover { text-decoration: underline; }
         margin-left: 67px; width: 47%; text-align: center;
     }
 }
+
+.form-control { height: 47px !important; padding: 10px 12px !important; }
+
+.sucesso { margin: 1.7em auto; max-width: 377px; }

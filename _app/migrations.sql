@@ -30,10 +30,13 @@ CREATE TABLE cliente (
     nome VARCHAR(170) NOT NULL,
     email VARCHAR(170) NOT NULL,
     endereco_id INT NOT NULL,
-    telefone VARCHAR(20) NOT NULL
+    telefone VARCHAR(20) NOT NULL,
+    cpf CHAR(11) NOT NULL,
+    contrato_id INT UNSIGNED DEFAULT NULL
 );
 
 CREATE UNIQUE INDEX un_ix_cliente ON cliente (email);
+CREATE UNIQUE INDEX un_ix_cliente_cpf ON cliente (cpf);
 
 CREATE TABLE complemento (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -118,7 +121,8 @@ CREATE TABLE servico_agendamento (
     valorTotal FLOAT NOT NULL,
     cliente_id INT UNSIGNED NOT NULL,
     emailEnviado CHAR(1) NOT NULL DEFAULT 'N',
-    servico_id INT UNSIGNED NOT NULL
+    servico_id INT UNSIGNED NOT NULL,
+    qtdDiarias INT DEFAULT NULL
 );
 
 CREATE UNIQUE INDEX un_ix_servico_agendamento ON servico_agendamento (
@@ -130,7 +134,30 @@ CREATE TABLE contrato (
     numero VARCHAR(17) NOT NULL,
     data   DATETIME NOT NULL DEFAULT now(),
     qtdDiarias INT NOT NULL,
-    valor FLOAT NOT NULL
+    valor FLOAT NOT NULL,
+    status CHAR(1) NOT NULL DEFAULT '1'
 );
 
 CREATE UNIQUE INDEX un_ix_contrato ON contrato (numero);
+
+CREATE TABLE profissional (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    cpf CHAR(11) NOT NULL,
+    nome VARCHAR(170) NOT NULL,
+    email VARCHAR(170) NOT NULL,
+    endereco_id INT NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    status CHAR(1) NOT NULL DEFAULT '1'
+);
+
+CREATE UNIQUE INDEX un_ix_profissional ON profissional (email);
+CREATE UNIQUE INDEX un_ix_profissional_cpf ON profissional (cpf);
+
+CREATE TABLE cliente_contrato (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT UNSIGNED NOT NULL,
+    contrato_id INT UNSIGNED NOT NULL
+);
+
+CREATE UNIQUE INDEX un_ix_cliente_contrato ON cliente_contrato (cliente_id,
+    contrato_id);

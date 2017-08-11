@@ -1,4 +1,4 @@
 <section>
-<h1>#titulo#</h1>
-<p>#mensagem#</p>
+    <h3>#titulo#</h3>
+    <p>#mensagem#</p>
 </section>

@@ -20,6 +20,12 @@ class DiscriminacaoController extends Controller
         View::render('view/servico/discriminacao', $arrDados);
     }
     
+    public function discriminarAction()
+    {
+        $arrDados = array('url'=>$this->getBaseUrl(),'observacao'=>'');
+        View::render('view/servico/discriminacao', $arrDados);
+    }
+    
     public function salvarAction()
     {
         try {
