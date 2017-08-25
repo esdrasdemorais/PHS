@@ -19,15 +19,13 @@ class DescricaoController extends Controller
     
     public function indexAction()
     {
-        $arrDados = array('url'=>$this->getBaseUrl(),'nome'=>'');
+        $arrDados = array('url'=>$this->getBaseUrl(),'nome'=>'','id'=>'');
         View::render('view/descricao/criar', $arrDados);
     }
     
     public function criarAction()
     {
-        $arrDados = array('url'=>$this->getBaseUrl(),'numero'=>'','qtdDiarias'=>
-            '','valor'=>'','data'=>'');
-        View::render('view/descricao/criar', $arrDados);
+	$this->indexAction();
     }
     
     public function salvarAction()

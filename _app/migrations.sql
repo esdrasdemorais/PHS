@@ -95,15 +95,6 @@ CREATE TABLE descricao (
 
 CREATE UNIQUE INDEX un_ix_descricao ON descricao (nome);
 
-CREATE TABLE servico_descricao (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    servico_id INT UNSIGNED NOT NULL,
-    descricao_id INT UNSIGNED NOT NULL
-);
-
-CREATE UNIQUE INDEX un_ix_servico_descricao ON servico_descricao (servico_id,
-    descricao_id);
-
 CREATE TABLE servico (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(177) NOT NULL,
@@ -112,21 +103,42 @@ CREATE TABLE servico (
     valorHora FLOAT NOT NULL
 );
 
-CREATE TABLE servico_agendamento (
+CREATE TABLE servico_cliente (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    servico_id INT UNSIGNED NOT NULL,
+    cliente_id INT UNSIGNED NOT NULL,
+    data DATE NOT NULL,
+    ativo CHAR(1) NOT NULL DEFAULT '1'
+);
+
+CREATE UNIQUE INDEX un_ix_servico_cliente ON servico_cliente (
+    servico_id, cliente_id, data
+);
+
+CREATE TABLE servico_cliente_descricao (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    servico_cliente_id INT UNSIGNED NOT NULL,
+    descricao_id INT UNSIGNED NOT NULL
+);
+
+CREATE UNIQUE INDEX un_ix_servico_cliente_descricao ON servico_cliente_descricao (
+    servico_cliente_id, descricao_id
+);
+
+CREATE TABLE servico_cliente_agendamento (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     tipo CHAR(1) NOT NULL DEFAULT 3,
     data DATE NOT NULL,
     hora TIME NOT NULL,
     periodo VARCHAR(70) NOT NULL,
     valorTotal FLOAT NOT NULL,
-    cliente_id INT UNSIGNED NOT NULL,
     emailEnviado CHAR(1) NOT NULL DEFAULT 'N',
-    servico_id INT UNSIGNED NOT NULL,
+    servico_cliente_id INT UNSIGNED NOT NULL,
     qtdDiarias INT DEFAULT NULL
 );
 
-CREATE UNIQUE INDEX un_ix_servico_agendamento ON servico_agendamento (
-    cliente_id, servico_id, data, hora
+CREATE UNIQUE INDEX un_ix_servico_cliente_agendamento ON servico_cliente_agendamento (
+    servico_cliente_id, data, hora
 );
 
 CREATE TABLE contrato (

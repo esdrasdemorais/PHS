@@ -1,7 +1,7 @@
 <form method="post" title="Cadastro Agendamento Serviço" 
-    action="#url#/index.php/agendamento/salvar/tipo/#tipo#" id="cad_servico">
+    action="#url#/index.php/agendamento/salvar" id="cad_servico">
     
-    <input type="hidden" name="id" value="#id#" />
+    <input type="hidden" name="servico_cliente_id" value="#servico_cliente_id#" />
     
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
     <script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>

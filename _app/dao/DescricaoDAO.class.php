@@ -31,19 +31,17 @@ class DescricaoDAO extends Object
         $arrDescricao = array();              
         $read = new Read();
         if (is_numeric($id)) {
-            $read->ExeRead('descricao', "where id=:id and ativo='1'", 
+            $read->ExeRead('descricao', "where id=:id and status='1'", 
                 'id=' . $id);
         } else {
             $read->ExeRead('descricao');
         }
-        
         foreach($read->getResult() as $des) {
             $descricao = new Descricao();
             $descricao->setId($des['id']);
             $descricao->setNome($des['nome']);
             $arrDescricao[] = $descricao;
         }
-        
         return $arrDescricao;
     }
     
@@ -60,7 +58,7 @@ class DescricaoDAO extends Object
     {
         $create = new Create();
         try{
-            $create->ExeCreate('descricao', $this->toArray($descricao));
+            $create->ExeCreate('descricao', ['nome'=>$descricao->getNome()]);
             if(is_numeric($create->getResult())){
                 $descricao->setId($create->getResult());
                 return $descricao;

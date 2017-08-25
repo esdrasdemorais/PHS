@@ -1,74 +1,95 @@
 <?php
 
 /**
- * ServicoEnderecoDAO [ TIPO ]
+ * ServicoDescricaoDAO [ TIPO ]
  * Descrição
- * @copyright (c) year, Victor Hugo Garcia Caetano - SP
+ * @copyright (c) year, Esdras de Morais da Silva - SP
  */
-class ServicoEnderecoDAO {
-    public function alterar(ServicoEndereco $endereco)
+class ServicoDescricaoDAO extends Object
+{
+    public function alterar(ServicoDescricao $servicoDescricao)
     {
         $update = new Update();
-
         try {
-          $update->ExeUpdate("endereco", (array)$endereco, 'where id=:id', ':id='.$endereco->getId());
-          //return $endereco;
+	    $update->ExeUpdate("endereco", $this->toArray($servicoDescricao),
+		'where id=:id', ':id='.$servicoDescricao->getId());
+          return $servicoDescricao;
         } catch (Exception $ex) {  
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
+	    PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(),
+		$ex->getLine()); 
         }
     }
 
-    public function listar()
+    public function listar($id = null)
     {
-        $arrServicoEndereco = array();
-
-        $read = new Read();
-        $read->ExeRead('endereco');
-
-        foreach($read->getResult() as $end) {
-            $arrServicoEndereco[] = $this->setServicoEndereco($end);
+        $arrServicoDescricao = array();
+	$read = new Read();
+	if (is_numeric($id)) {
+            $read->ExeRead('servico_cliente_descricao', "where id=:id", 
+		'id=' . $id);
+        } else {
+	    $read->ExeRead('servico_cliente_descricao');
+	}
+        foreach ($read->getResult() as $serDesc) {
+            $arrServicoDescricao[] = $this->setServicoDescricao($serDesc);
         }
+        return $arrServicoDescricao;
+    }
 
-        return $arrServicoEndereco;
+    public function setServicoDescricao($arrServDesc)
+    {
+    	$servicoDescricao = new ServicoDescricao();
+	$servicoDescricao->setId($arrServDesc['id']);
+	$servicoClienteDAO = new ServicoClienteDAO();
+	$servicoCliente = $servicoClienteDAO->listar(
+	    $arrServDesc['servico_cliente_id'])[0];
+	$servicoDescricao->setServicoCliente($servicoCliente);
+	$descricaoDAO = new DescricaoDAO();
+	$descricao = $descricaoDAO->listar($arrServDesc['descricao_id'])[0];
+	$servicoDescricao->setDescricao($descricao);
+	return $servicoDescricao;
     }
     
-    private function setServicoEndereco(array $end)
+    public function setServicosDescricao(array $serDesc)
     {
-        $endereco = new ServicoEndereco();
-        $endereco->setId($end['id']);
-        $endereco->setLogradouro($end['logradouro']);
-        $endereco->setBairro($end['bairro']);
-        $endereco->setCidade($end['cidade']);
-        $endereco->setEstado($end['estado']);
-        $endereco->setCep($end['cep']);
-
-        $readServicoEndereco = new Read();
-        $readServicoEndereco->ExeRead('endereco', 'where id=:id', ':id = ' . $end['endereco_id']); 
-
-        return $readServicoEndereco->getResult()[0];
+	$arrServicoDescricao = array();
+	$servicoDescricaoDAO = new ServicoDescricaoDAO();
+	foreach ($serDesc['ids'] as $descricaoId) {
+            $descricaoDAO = new DescricaoDAO();
+	    $descricao = $descricaoDAO->listar($descricaoId)[0];
+	    $arrServicoDescricao[] = ['descricao_id'=>$descricao->getId(),
+		'servico_cliente_id'=>$serDesc['servico_cliente_id']];
+	}
+	return $arrServicoDescricao;
     }
 
-    public function salvar(ServicoEndereco $endereco)
+    public function salvar(array $arrServicoDescricao)
     {
-        $create = new Create();
+	$create = new Create();
+	$arrServicosDescricao = array();
+	try {
+	    foreach ($arrServicoDescricao as $servicoDescricao) {
+		$create->ExeCreate('servico_cliente_descricao',
+		    $servicoDescricao);
+            	if (is_numeric($create->getResult())) {
+		    $arrServicosDescricao[] = $this->listar(
+			    $create->getResult())[0];
 
-        try{
-          $create->ExeCreate('endereco', (array)$endereco);
-          if(is_numeric($create->getResult())){
-              $endereco->setId($create->getResult());
-              return $endereco;
-          } else{
-              throw new Exception('Não foi possível realizar seu cadastro.');
-          }
+            	} else {
+		    throw new Exception(
+			'Não foi possível realizar seu cadastro.');
+		}
+	    }
+	    return $arrServicosDescricao;
         } catch (Exception $ex) {
-            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine());                                   
+	    PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(),
+		$ex->getLine());
         }
     }
 
     public function deletar(ServicoEndereco $endereco)
     {
         $delete = new Delete();
-
         try {
             $delete->ExeDelete('endereco', 'where id= :id', ':id='.$endereco->getId());
             if($delete->getResult() === true){
@@ -76,10 +97,8 @@ class ServicoEnderecoDAO {
             } else {
                 throw new Exception("Não foi possível remover o endereco.");
             }
-
         } catch (Exception $ex) {
                PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
         }
-
     }
 }

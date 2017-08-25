@@ -17,6 +17,7 @@ class Cliente {
     private $id;
     private $nome;
     private $email;
+    private $cpf;
     private $endereco_id;
     private $telefone;
     
@@ -30,6 +31,10 @@ class Cliente {
 
     function getEmail() {
         return $this->email;
+    }
+
+    function getCpf() {
+        return $this->cpf;
     }
 
     function getEndereco() {
@@ -50,6 +55,10 @@ class Cliente {
 
     function setEmail($email) {
         $this->email = $email;
+    }
+
+    function setCpf($cpf) {
+        $this->cpf = $cpf;
     }
 
     function setEndereco(Endereco $endereco) {

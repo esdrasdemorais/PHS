@@ -10,46 +10,16 @@ class ServicoAgendamento
     protected $data;
     protected $hora;
     protected $periodo;
-    protected $valorTotal;
     protected $endereco;
-    protected $cliente;
     protected $emailEnviado;
-    protected $servico;
     protected $qtdDiarias;
+    protected $valorTotal;
+    protected $servicoCliente;
     
     function getId() {
         return $this->id;
     }
 
-    function getEndereco() {
-        return $this->endereco;
-    }
-
-    function getCliente() {
-        return $this->cliente;
-    }
-    
-    public function getQtdDiarias() {
-        return $this->qtdDiarias;
-    }
-    
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setEndereco($endereco) {
-        $this->endereco = $endereco;
-    }
-
-    function setCliente(Cliente $cliente) {
-        $this->cliente = $cliente;
-    }
-    
-    private function setCustoHora() {
-        $servico = $this->getServico();
-        $this->valorTotal = $this->periodo * $servico->getValorHora();
-    }
-    
     function getData() {
         return $this->data;
     }
@@ -61,11 +31,37 @@ class ServicoAgendamento
     function getPeriodo() {
         return $this->periodo;
     }
-    
-    public function getServico() {
-        return $this->servico;
+
+    function getEndereco() {
+        return $this->endereco;
     }
     
+    function getEmailEnviado() {
+        return $this->emailEnviado;
+    }
+
+    public function getQtdDiarias() {
+        return $this->qtdDiarias;
+    } 
+
+    function getValorTotal() {
+	$this->valorTotal = 23.33 * $this->periodo;
+        return $this->valorTotal;
+    }
+
+    public function getServicoCliente()
+    {
+	return $this->servicoCliente;
+    }
+    
+    function setId($id) {
+        $this->id = $id;
+    }
+
+    function setEndereco($endereco) {
+        $this->endereco = $endereco;
+    }
+
     function setData($data) {
         $this->data = $data;
     }
@@ -78,23 +74,22 @@ class ServicoAgendamento
         $this->periodo = $periodo;
     }
 
-    function getCustoHora() {
-        return $this->valorTotal;
-    }
-    
-    function getEmailEnviado() {
-        return $this->emailEnviado;
-    }
-
     function setEmailEnviado($emailEnviado) {
         $this->emailEnviado = $emailEnviado;
     }
     
-    public function setServico(Servico $servico) {
-        $this->servico = $servico;
-    }
-    
     public function setQtdDiarias($qtdDiarias) {
         $this->qtdDiarias = $qtdDiarias;
+    }
+
+    private function setValorTotal()
+    {
+        #$servico = $this->getServico();
+	#$this->valorTotal = $this->periodo * $servico->getValorHora();
+    }
+
+    public function setServicoCliente($servicoCliente)
+    {
+	$this->servicoCliente = $servicoCliente->getId();
     }
 }

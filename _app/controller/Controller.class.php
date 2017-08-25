@@ -56,8 +56,7 @@ abstract class Controller
     {
         $this->title = 'Terceiro Elemento';
 
-        View::Load('view/default/index');
-        View::Show(array());
+        View::render('view/default/index', array('url'=>$this->getBaseUrl()));
     }
 
     public function redirect($url)

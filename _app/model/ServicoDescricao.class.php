@@ -7,15 +7,15 @@
 class ServicoDescricao
 {
     private $id;
-    private $servico;
+    private $servicoCliente;
     private $descricao;
     
     public function getId() {
         return $this->id;
     }
 
-    public function getServico() {
-        return $this->servico;
+    public function getServicoCliente() {
+        return $this->servicoCliente;
     }
 
     public function getDescricao() {
@@ -26,8 +26,8 @@ class ServicoDescricao
         $this->id = $id;
     }
 
-    public function setServico($servico) {
-        $this->servico = $servico->getId();
+    public function setServicoCliente($servicoCliente) {
+        $this->servicoCliente = $servicoCliente->getId();
     }
 
     public function setDescricao($descricao) {

@@ -58,7 +58,9 @@ class ContratoDAO extends Object
     {
         $create = new Create();
         try {
-            $create->ExeCreate('contrato', $this->toArray($contrato));
+	    $create->ExeCreate('contrato', ['numero'=>$contrato->getNumero(),
+		'data'=>$contrato->getData(),'qtdDiarias'=>
+		$contrato->getQtdDiarias(),'valor'=>$contrato->getValor()]);
             if(is_numeric($create->getResult())){
                 $contrato->setId($create->getResult());
                 return $contrato;

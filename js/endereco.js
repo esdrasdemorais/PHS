@@ -33,7 +33,7 @@ $('#endereco').keyup(function() {
     $("#place").click(function() {
         $("#endereco").val($("#place").html());
         $.getJSON(
-            '#url#/index.php/endereco/buscar/endereco/' +
+            '/index.php/endereco/buscar/endereco/' +
             $('#endereco').val().replace(/ /g, '+') + '/geo/' + 
             $("#geolocalizacao").val(),
         function( json ) {

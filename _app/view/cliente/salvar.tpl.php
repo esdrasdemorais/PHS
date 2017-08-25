@@ -8,13 +8,22 @@
         <label>Nome:</label>
         <input type="text" name="cli_nome" maxlength="170" value="#nome#" 
             title="Informe o nome completo." min="17" class="form-control"
-            x-moz-errormessage="Informe o nome completo." required />
+	    x-moz-errormessage="Informe o nome completo." required
+	    placeholder="Nome Completo" />
     </div>
     <div class="form-group">
         <label>E-mail:</label>
         <input type="email" name="cli_email" maxlength="170" value="#email#" 
             required title="Informe um email válido." class="form-control"
-            x-moz-errormessage="Informe um email válido." />
+	    x-moz-errormessage="Informe um email válido."
+	    placeholder="Email Válido" />
+    </div>
+    <div class="form-group">
+        <label>CPF:</label>
+        <input type="text" name="cli_cpf" maxlength="11" value="#cpf#" 
+            required title="Informe um cpf válido." class="form-control"
+	    x-moz-errormessage="Informe um cpf válido." min="11" max="11"
+	    placeholder="(11111111111)Somente números" />
     </div>
     <div class="form-group">
         <label>Telefone Celular:</label>

@@ -54,7 +54,7 @@ class Contrato
     }
 
     public function setValor($valor) {
-        $this->valor = $valor;
+        $this->valor = (float) str_replace(",", ".", $valor);
     }
 
     public function setStatus($status) {

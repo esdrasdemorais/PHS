@@ -20,15 +20,13 @@ class ContratoController extends Controller
     public function indexAction()
     {
         $arrDados = array('url'=>$this->getBaseUrl(),'numero'=>'','qtdDiarias'=>
-            '','valor'=>'','data'=>'');
+            '','valor'=>'','data'=>'','id'=>'');
         View::render('view/contrato/criar', $arrDados);
     }
     
     public function criarAction()
     {
-        $arrDados = array('url'=>$this->getBaseUrl(),'numero'=>'','qtdDiarias'=>
-            '','valor'=>'','data'=>'');
-        View::render('view/contrato/criar', $arrDados);
+	$this->indexAction();
     }
     
     public function salvarAction()

@@ -42,7 +42,9 @@ class ClienteDAO extends Object
             $cliente = new Cliente();
             $cliente->setId($cli['id']);
             $cliente->setNome($cli['nome']);
-            $cliente->setEmail($cli['email']);
+	    $cliente->setEmail($cli['email']);
+	    $cliente->setCpf($cli['cpf']);
+	    $cliente->setTelefone($cli['telefone']);
             $endereco = new EnderecoDAO();           
             
             $cliente->setEndereco($endereco->listar($cli['endereco_id'])[0]);       
@@ -58,7 +60,8 @@ class ClienteDAO extends Object
         $this->cliente = new Cliente();
         $this->cliente->setId($arrCliente['id']);
         $this->cliente->setNome($arrCliente['cli_nome']);
-        $this->cliente->setEmail($arrCliente['cli_email']);
+	$this->cliente->setEmail($arrCliente['cli_email']);
+	$this->cliente->setCpf($arrCliente['cli_cpf']);
         $this->cliente->setTelefone($arrCliente['cli_telefone']);
         
         $this->setEndereco($arrCliente);
@@ -109,8 +112,11 @@ class ClienteDAO extends Object
     {
         $create = new Create();
         try {
-            $create->ExeCreate('cliente', $this->toArray($cliente));
-            if(is_numeric($create->getResult())){
+	    $create->ExeCreate('cliente', ['nome'=>$cliente->getNome(),
+		'email'=>$cliente->getEmail(),'cpf'=>$cliente->getCpf(),
+		'telefone'=>$cliente->getTelefone(),'endereco_id'=>
+		$cliente->getEndereco()]);
+	    if(is_numeric($create->getResult())){
                 $cliente->setId($create->getResult());
                 return $cliente;
             } else {

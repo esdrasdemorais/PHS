@@ -14,15 +14,13 @@ class ClienteController extends Controller
 
     public function indexAction()
     {
-        $arrDados = array('url'=>$this->getBaseUrl(),'id'=>'','nome'=>'',
-            'email'=>'','endereco'=>'','telefone'=>'');
-        View::render('view/cliente/salvar', $arrDados);
+	$this->criarAction();
     }
 
     public function criarAction()
     {
         $arrCliente = array('id'=>'','nome'=>'','email'=>'','endereco'=>'',
-            'telefone'=>'');
+            'telefone'=>'','cpf'=>'');
         if (is_numeric($this->getParams('id'))) {
             $this->clienteDAO = new ClienteDAO();
             $this->cliente = $this->clienteDAO->listar(
