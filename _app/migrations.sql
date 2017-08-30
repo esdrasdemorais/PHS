@@ -50,13 +50,6 @@ CREATE TABLE cliente_complemento (
     complemento_id INT UNSIGNED NOT NULL
 );
 
-CREATE TABLE servico_complemento (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    servico_id INT UNSIGNED NOT NULL,
-    endereco_id INT UNSIGNED NOT NULL,
-    complemento_id INT UNSIGNED NOT NULL
-);
-
 CREATE TABLE servico_endereco (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     servico_id INT UNSIGNED NOT NULL,
@@ -130,7 +123,7 @@ CREATE TABLE servico_cliente_agendamento (
     tipo CHAR(1) NOT NULL DEFAULT 3,
     data DATE NOT NULL,
     hora TIME NOT NULL,
-    periodo VARCHAR(70) NOT NULL,
+    periodo VARCHAR(70) DEFAULT NULL,
     valorTotal FLOAT NOT NULL,
     emailEnviado CHAR(1) NOT NULL DEFAULT 'N',
     servico_cliente_id INT UNSIGNED NOT NULL,
@@ -140,6 +133,18 @@ CREATE TABLE servico_cliente_agendamento (
 CREATE UNIQUE INDEX un_ix_servico_cliente_agendamento ON servico_cliente_agendamento (
     servico_cliente_id, data, hora
 );
+
+CREATE TABLE servico_cliente_complemento (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    servico_cliente_id INT UNSIGNED NOT NULL,
+    endereco_id INT UNSIGNED NOT NULL,
+    complemento_id INT UNSIGNED NOT NULL
+);
+
+CREATE UNIQUE INDEX un_ix_servico_cliente_complemento ON 
+    servico_cliente_complemento (
+        servico_cliente_id, endereco_id, complemento_id
+    );
 
 CREATE TABLE contrato (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -159,7 +164,8 @@ CREATE TABLE profissional (
     email VARCHAR(170) NOT NULL,
     endereco_id INT NOT NULL,
     telefone VARCHAR(20) NOT NULL,
-    status CHAR(1) NOT NULL DEFAULT '1'
+    status CHAR(1) NOT NULL DEFAULT '1',
+    foto VARCHAR(77) DEFAULT NULL
 );
 
 CREATE UNIQUE INDEX un_ix_profissional ON profissional (email);
@@ -173,3 +179,14 @@ CREATE TABLE cliente_contrato (
 
 CREATE UNIQUE INDEX un_ix_cliente_contrato ON cliente_contrato (cliente_id,
     contrato_id);
+
+CREATE TABLE servico_agendamento_avaliacao (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    servico_cliente_agendamento_id INT UNSIGNED NOT NULL,
+    nota INT UNSIGNED NOT NULL,
+    comentario TEXT DEFAULT NULL,
+    data DATETIME NOT NULL DEFAULT NOW()
+);
+
+CREATE UNIQUE INDEX un_ix_servico_agendamento_avaliacao ON 
+    servico_agendamento_avaliacao (servico_cliente_agendamento_id);

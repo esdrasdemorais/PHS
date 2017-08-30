@@ -10,8 +10,13 @@ class ServicoAgendamentoDAO extends Object
     {
         $update = new Update();
         try {
-            $update->ExeUpdate("servico_cliente_agendamento", 
-                $this->toArray($servicoAgendamento), 'where id=:id', 
+            $update->ExeUpdate("servico_cliente_agendamento",[
+                'data'=>$servicoAgendamento->getData(),'hora'=>
+                $servicoAgendamento->getHora(),'periodo'=>
+                $servicoAgendamento->getPeriodo(),'valorTotal'=>
+                $servicoAgendamento->getValorTotal(),'emailEnviado'=>
+                $servicoAgendamento->getEmailEnviado(),'qtdDiarias'=>
+                $servicoAgendamento->getQtdDiarias()], 'where id=:id', 
                 'id='.$servicoAgendamento->getId());
             return $servicoAgendamento;
         } catch (Exception $ex) {
@@ -25,28 +30,35 @@ class ServicoAgendamentoDAO extends Object
         $arrServicoAgendamento = array();
         $read = new Read();
         if (is_numeric($id)) {
-            $read->ExeRead('servico_cliente_agendamento', 'id=:id', 'id='.$id);
+            $read->ExeRead('servico_cliente_agendamento', 'where id=:id',
+                'id='.$id);
         } else {
             $read->ExeRead('servico_cliente_agendamento');
         }
         foreach($read->getResult() as $servico) {
-            $arrServicoAgendamento[] = $this->setServico($servico);
+            $arrServicoAgendamento[] = $this->setServicoAgendamento($servico);
         }
         return $arrServicoAgendamento;
     }
     
     public function setServicoAgendamento(array $servico)
-    {
+    { 
         $servicoAgendamento = new ServicoAgendamento();
         $servicoAgendamento->setId(isset($servico['id'])?$servico['id']:'');
         $servicoAgendamento->setData($servico['data']);
         $servicoAgendamento->setHora($servico['hora']);
-        $servicoAgendamento->setPeriodo($servico['periodo']);
-        $endereco = new EnderecoDAO();           
-        $servicoAgendamento->setEndereco(
-	    $endereco->listar($servico['endereco_id'])[0]);
-	$servicoClienteDAO = new ServicoClienteDAO();
-	$servicoAgendamento->setServicoCliente(
+        if (isset($servico['qtdDiarias'])) {
+            $servicoAgendamento->setQtdDiarias($servico['qtdDiarias']);
+        } else {
+            $servicoAgendamento->setPeriodo($servico['periodo']);
+        }
+        $endereco = new EnderecoDAO();
+        if(isset($servico['endereco_id'])) {
+            $servicoAgendamento->setEndereco(
+	            $endereco->listar($servico['endereco_id'])[0]);
+        }
+	    $servicoClienteDAO = new ServicoClienteDAO();
+	    $servicoAgendamento->setServicoCliente(
 	    $servicoClienteDAO->listar($servico['servico_cliente_id'])[0]);
         return $servicoAgendamento;
     }
@@ -57,9 +69,10 @@ class ServicoAgendamentoDAO extends Object
         try {
             $arrServico = array('data'=>$servicoAgendamento->getData(),'hora'=>
                 $servicoAgendamento->getHora(),'periodo'=>
-		$servicoAgendamento->getPeriodo(),'servico_cliente_id'=>
-		$servicoAgendamento->getServicoCliente(),'valorTotal'=>
-		$servicoAgendamento->getValorTotal());
+		        $servicoAgendamento->getPeriodo(),'servico_cliente_id'=>
+        		$servicoAgendamento->getServicoCliente(),'valorTotal'=>
+		        $servicoAgendamento->getValorTotal(),'qtdDiarias'=>
+                $servicoAgendamento->getQtdDiarias());
             $create->ExeCreate('servico_cliente_agendamento', $arrServico);
             if (is_numeric($create->getResult())) {
                 $servicoAgendamento->setId($create->getResult());

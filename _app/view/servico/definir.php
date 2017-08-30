@@ -7,6 +7,9 @@ $cabecalho = array_merge($cabecalho, $array);
 View::Load('view/cabecalho');
 View::Show($cabecalho);
 
+View::Load('view/menu');
+View::Show($cabecalho);
+
 View::Load('view/servico/definir');
 View::Show($array);
 

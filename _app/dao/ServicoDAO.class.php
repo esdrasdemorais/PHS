@@ -26,10 +26,10 @@ class ServicoDAO extends Object
 
     public function listar($id = null)
     {
-        $arrServico = array();              
+        $arrServico = array();
         $read = new Read();
         if (is_numeric($id)) {
-            $read->ExeRead('servico', "where id=:id and ativo='1'", 
+            $read->ExeRead('servico', "where id=:id and status='1'", 
                 'id=' . $id);
         } else {
             $read->ExeRead('servico');
@@ -49,7 +49,7 @@ class ServicoDAO extends Object
     public function salvar(Servico $servico)
     {
         $create = new Create();
-        try{
+        try {
             $create->ExeCreate('servico', $servico);
             if(is_numeric($create->getResult())){
                 $servico->setId($create->getResult());
@@ -69,7 +69,7 @@ class ServicoDAO extends Object
         try {
             $delete->ExeDelete('servico', 'where id=:id', 
                 'id='.$servico->getId());
-            if($delete->getResult() === true){
+            if ($delete->getResult() === true){
                 return "Servico removido com sucesso!";      
             } else {
                 throw new Exception("Não foi possível remover o servico.");

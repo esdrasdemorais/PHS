@@ -15,13 +15,13 @@ header, section, footer, aside, nav, main, article, figure {
 
 .form-group, h1, h2, h3 { color: #337ab7 !important; }
 
-#cad_cliente, #cad_servico, #login_cliente, #cad_contrato { 
-    max-width: 377px; margin: 1.7em auto;
+#cad_cliente, #cad_servico, #login_cliente, #cad_contrato, #cad_profissional, #cad_avaliacao {
+    max-width: 377px; margin: 1.7em auto; margin-top: 57px; 
 }
 
 a:hover { text-decoration: underline; }
 
-#selecionar { max-width:777px; margin: 0 auto; }
+#selecionar { max-width:777px; margin: 0 auto; margin-top: 57px; }
 #selecionar section { float:left; }
 #selecionar a { float:left; border-radius: 0.7em; }
 #selecionar a:hover { border: 1px solid #337ab7; }
@@ -34,4 +34,4 @@ a:hover { text-decoration: underline; }
 
 .form-control { height: 47px !important; padding: 10px 12px !important; }
 
-.sucesso { margin: 1.7em auto; max-width: 377px; }
+.sucesso { margin: 1.7em auto; max-width: 377px; margin-top: 57px; }

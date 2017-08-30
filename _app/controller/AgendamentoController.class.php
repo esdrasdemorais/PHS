@@ -12,9 +12,10 @@ class AgendamentoController extends Controller
     public function __construct()
     {
         parent::__construct();
-	if (false === SessionManagement::persist('cliente')) {
-	    $this->redirect($this->getBaseUrl() . '/index.php/login');
-	}
+	    if (false === SessionManagement::persist('cliente')) {
+	        $this->redirect($this->getBaseUrl() . '/index.php/login');
+	    }
+        $this->servicoDAO = new ServicoAgendamentoDAO();
     }
     
     public function indexAction()
@@ -35,73 +36,95 @@ class AgendamentoController extends Controller
     public function escolherAction()
     {
         $servicoClienteId = $this->getParams()['servico_cliente_id'];
+        $clienteDAO = new ClienteDAO();
+        $labelPeriodo = 'Período de Horas:';
+        $namePeriodo = 'periodo';
+        $maxPeriodo = 12;
+        if (true === $clienteDAO->hasContrato(Session::get('cliente_id'))) {
+            $labelPeriodo = 'Qtd. Diárias:';
+            $namePeriodo = 'qtdDiarias';
+            $maxPeriodo = 777;
+        }
         $arrDados = array('url'=>$this->getBaseUrl(), 'id'=>'','data'=>'',
-	    'hora'=>'','periodo'=>'','endereco'=>'','servico_cliente_id'=>
-	    $servicoClienteId,'minDate'=>date('d') + 1 . date('/m/Y'));
+	        'hora'=>'','valuePeriodo'=>'','endereco'=>'','servico_cliente_id'=>
+            $servicoClienteId,'minDate'=>date('d') + 1 . date('/m/Y'),
+            'labelPeriodo'=>$labelPeriodo,'namePeriodo'=>$namePeriodo,
+            'maxPeriodo'=>$maxPeriodo);
         View::render('view/servico/definir', $arrDados);
+    }
+
+    private function updateEmailEnviado()
+    {
+        $this->servico->setEmailEnviado('S');
+        $this->servicoDAO->alterar($this->servico);
     }
 
     public function salvarAction()
     {
         try {
-	    $servicoClienteId = $this->getRequest()['servico_cliente_id'];
-            $this->servicoDAO = new ServicoAgendamentoDAO();
             $this->servico = $this->servicoDAO->setServicoAgendamento(
                 $this->getRequest());
-            $servico = $this->servicoDAO->salvar($this->servico);
+            $this->servico = $this->servicoDAO->salvar($this->servico);
             if (true === $this->enviarEmail($this->servico)) {
-                $this->servico->setEmailEnviado('S');
-                $this->servicoDAO->alterar($this->servico);
+                $this->updateEmailEnviado();
             }
-            $mensagem = 'Sua Solicitação de ' . $this->getParams()['tipo'] . 
-            'está concluída.<br> Aguarde contato para confirmação!';
-            $arrDados = array('titulo'=>'SUCESSO!!!', 'servicos'=> $mensagem);
-            View::render('view/servico/sucesso', $arrDados);
+            $servicoClienteDAO = new ServicoClienteDAO();
+            $servicoCliente = $servicoClienteDAO->listar(
+                $this->getRequest()['servico_cliente_id'])[0];
+            $servicoDAO = new ServicoDAO();
+            $servico = $servicoDAO->listar($servicoCliente->getServico())[0];
+            if ($this->servico instanceof ServicoAgendamento) {
+                $msg = 'Sua Solicitação de ' . ucfirst($servico->getNome()) .
+                    ' está concluída.<br>Aguarde contato para confirmação!';
+                $arrDados = array('titulo'=>'SUCESSO!!!', 'msg'=> $msg,'url'=>
+                    $this->getBaseUrl(),'id'=>$this->servico->getId());
+                View::render('view/servico/sucesso', $arrDados);
+            }
         } catch (Exception $e) {
             SSErro("Ops! Infelizmente ouve um problema. Tente novamente!", 
                 SS_ERROR);                                   
         } 
     }
 
-    private function enviarEmail($servicoAgendamento) 
+    private function enviarEmail($servicoAgendamento)
     {
-	require_once __DIR__ . '/../vendor/PHPMailer/PHPMailerAutoload.php';
-
-	$servicoClienteDAO = new ServicoClienteDAO();
-	$servicoCliente = $servicoClienteDAO->listar(
-	    $servicoAgendamento->getServicoCliente())[0];
-	$clienteDAO = new ClienteDAO();
-	$cliente = $clienteDAO->listar($servicoCliente->getCliente())[0];
-	$servicoDAO = new ServicoDAO();
-	$servico = $servicoDAO->listar($servicoCliente->getServico());
-
-        $mail = new PHPMailer();$mail->SMTPDebug = 3;$mail->setLanguage('pt_br', '/optional/path/to/language/directory/');
-        $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp1.example.com;smtp2.example.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'user@example.com';                 // SMTP username
-        $mail->Password = 'secret';                           // SMTP password
-        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                                    // TCP port to connect to
-        $mail->setFrom('from@example.com', 'Mailer');
-        $mail->addAddress('joe@example.net', 'Joe User');     // Add a recipient
-        $mail->addReplyTo($cliente->getEmail(), 'Information');
+	    $servicoClienteDAO = new ServicoClienteDAO();
+	    $servicoCliente = $servicoClienteDAO->listar(
+	        $servicoAgendamento->getServicoCliente())[0];
+	    $clienteDAO = new ClienteDAO();
+	    $cliente = $clienteDAO->listar($servicoCliente->getCliente())[0];
+	    $servicoDAO = new ServicoDAO();
+	    $servico = $servicoDAO->listar($servicoCliente->getServico())[0];
+	    #$mail = new PHPMailerClient();
+ 	    #$mail->addReplyTo($cliente->getEmail(), 'Information');
         //$mail->addCC('cc@example.com');$mail->addBCC('bcc@example.com');
-        $mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = 'Terceiro Elemento - Solicitação de Serviço de' . ucfirst($servico->getNome()) ;
-        $mail->Body    = 'Foi solicitado o serviço de '. ucfirst($servico->getNome()) . ', para cliente abaixo:'
-            .'<br> Nome: ' . $cliente->getNome()
-            .'<br> Endereço: ' . $servicoAgendamento->getEndereco()->getLogradouro() . ', '
-            . $servicoAgendamento->getEndereco()->getNumero() . ', '//. $servico->getEndereco()->getComplemento()
-            . ', '. $servicoAgendamento->getEndereco()->getBairro()
-            . ', ' . $servicoAgendamento->getEndereco()->getCidade() . '-' 
-            . $servico->getEndereco()->getEstado()
-            .'<br> Data do Agendamento: ' . $servicoAgendamento->getData()
-            .'<br> Horário: ' .  $servicoAgendamento->getHora()
-            .'<br> Periodo: ' . $servicoAgendamento->getPeriodo();
-        if (true === $mail->send()) {           
-            return true;
-        }    
-        return false;
+	    #$mail->Subject = 'Terceiro Elemento - Solicitação de Serviço de' . 
+	    #    ucfirst($servico->getNome()) ;
+	    #$this->setBody($mail, ['servicoAgendamento'=>$servicoAgendamento, 
+	    #    'servico'=>$servico,'cliente'=>$cliente]);
+	    //@todo Debug alter true  
+        #return (false === $mail->send()) ? true : false;
+        return true;
+    }
+
+    private function setBody($mail, array $data)
+    {
+        /*$servicoComplementoDAO = new ServicoComplementoDAO();
+        $servicoComplemento = $servicoComplementoDAO->listar(
+            $data['servicoAgendamento']->getServicoCliente())[0];
+        $complementoDAO = new ComplementoDAO();
+        $complemento = $complementoDAO->listar(
+            $servicoComplemento->getComplemento())[0];*/
+	    $endereco = $data['servicoAgendamento']->getEndereco();
+	    $mail->Body = 'Foi solicitado o serviço de ' .
+	    ucfirst($data['servico']->getNome()) . ', para cliente abaixo:' .
+	    '<br> Nome: ' . $data['cliente']->getNome().'<br>Endereço: ' .
+        $endereco->getLogradouro() . ', ' . $endereco->getNumero() .
+	    ', ' . #$complemento->getName() . ', ' .
+	    $endereco->getBairro() . ', ' . $endereco->getCidade() . '-' .
+	    $endereco->getEstado() . '<br>Data do Agendamento: ' .
+	    $data['servicoAgendamento']->getData() . '<br>Horário: ' .
+	    $data['servicoAgendamento']->getHora() . '<br>Período: ' .
+	    $data['servicoAgendamento']->getPeriodo();
     }
 }

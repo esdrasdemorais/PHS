@@ -60,12 +60,17 @@ class ClienteDAO extends Object
         $this->cliente = new Cliente();
         $this->cliente->setId($arrCliente['id']);
         $this->cliente->setNome($arrCliente['cli_nome']);
-	$this->cliente->setEmail($arrCliente['cli_email']);
-	$this->cliente->setCpf($arrCliente['cli_cpf']);
+	    $this->cliente->setEmail($arrCliente['cli_email']);
+	    $this->cliente->setCpf($arrCliente['cli_cpf']);
         $this->cliente->setTelefone($arrCliente['cli_telefone']);
         
         $this->setEndereco($arrCliente);
-        
+
+        $contratoDAO = new ContratoDAO();
+        $contrato = $contratoDAO->findByNum($arrCliente['cli_contrato']);
+        $this->cliente->setContrato(is_object($contrato) ? 
+            $contrato->getId() : null);
+
         return $this->cliente;
     }
     
@@ -115,7 +120,7 @@ class ClienteDAO extends Object
 	    $create->ExeCreate('cliente', ['nome'=>$cliente->getNome(),
 		'email'=>$cliente->getEmail(),'cpf'=>$cliente->getCpf(),
 		'telefone'=>$cliente->getTelefone(),'endereco_id'=>
-		$cliente->getEndereco()]);
+		$cliente->getEndereco(),'contrato_id'=>$cliente->getContrato()]);
 	    if(is_numeric($create->getResult())){
                 $cliente->setId($create->getResult());
                 return $cliente;

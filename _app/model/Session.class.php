@@ -64,33 +64,34 @@ class Session extends Object implements SessionHandlerInterface
     public function criar($login)
     {
         if (is_object($login)) {
+            $clienteId = ($login instanceof LoginCliente) ? 
+                $login->getCliente() : null;
             $arrLogin = array(
                 "id"=>$login->getId(),
                 "tipo"=>$login->getTipo(),
                 "login"=>$login->getLogin(),
-                "cliente_id"=>(($login->getTipo() == LoginTipo::CLIENTE) ? 
-                    $login->getTipo() : null),
+                "cliente_id"=>$clienteId,
                 "logado"=>$login->getLogado()
             );
             foreach($arrLogin as $chave => $valor) {
                 $this->set($chave, $valor);
             }
         }
-	return count($_SESSION) > 0;
+	    return count($_SESSION) > 0;
     }
 
     public function set($chave, $valor)
     {
-	$_SESSION[$chave] = $valor;
+	    $_SESSION[$chave] = $valor;
     }
 
     public static function get($chave)
     {
-	return isset($_SESSION[$chave]) ? $_SESSION[$chave] : false;
+	    return isset($_SESSION[$chave]) ? $_SESSION[$chave] : false;
     }
     
     public static function checkSession()
-    {//var_dump($_SESSION);
+    {
         return strlen(trim((static::get('login')))) > 0;
     }
 }

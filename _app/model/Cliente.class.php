@@ -20,6 +20,7 @@ class Cliente {
     private $cpf;
     private $endereco_id;
     private $telefone;
+    private $contrato;
     
     function getId() {
         return $this->id;
@@ -44,7 +45,12 @@ class Cliente {
     function getTelefone() {
         return $this->telefone;
     }
-  
+
+    function getContrato()
+    {
+        return $this->contrato;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -67,5 +73,10 @@ class Cliente {
 
     function setTelefone($telefone) {
         $this->telefone = $telefone;
+    }
+
+    function setContrato($contrato)
+    {
+        $this->contrato = $contrato;
     }
 }

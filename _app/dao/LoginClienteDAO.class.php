@@ -15,9 +15,11 @@ class LoginClienteDAO extends LoginAbstractDAO implements LoginStrategy
         
         $clienteDAO = new ClienteDAO();
         $cliente = ((int)$arrLogin['id']) > 0 ?
-            $clienteDAO->listar($arrLogin['id'])[0] : new Cliente();
-        $login->setCliente($cliente);
-        
+            $clienteDAO->listar($arrLogin['id']) : null;
+        if ($cliente instanceof Cliente) {
+            $login->setCliente($cliente[0]);
+        }
+
         return $login;
     }
     

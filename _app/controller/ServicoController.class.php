@@ -10,7 +10,8 @@ class ServicoController extends Controller
     {
         parent::__construct();
 	if (false === SessionManagement::persist('administrador')) {
-	    $this->redirect($this->getBaseUrl() . '/index.php/login');
+	    $this->redirect($this->getBaseUrl() . 
+	        '/index.php/login/index/tipo/administrador');
 	}
     }
     
@@ -26,5 +27,10 @@ class ServicoController extends Controller
         $arrDados = array('url'=>$this->getBaseUrl(),'nome'=>'','icon'=>'',
             'valorTotal'=>'');
         View::render('view/servico/criar', $arrDados);
+    }
+
+    public function salvarAction()
+    {
+	//@todo
     }
 }

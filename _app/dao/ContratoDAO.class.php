@@ -32,11 +32,8 @@ class ContratoDAO extends Object
             $read->ExeRead('contrato');
         }
         
-        foreach($read->getResult() as $des) {
-            $contrato = new Contrato();
-            $contrato->setId($des['id']);
-            $contrato->setNome($des['nome']);
-            $contrato->setIcon($des['icon']);
+        foreach($read->getResult() as $con) {
+            $contrato = $this->setContrato($con);
             $arrContrato[] = $contrato;
         }
         
@@ -58,10 +55,10 @@ class ContratoDAO extends Object
     {
         $create = new Create();
         try {
-	    $create->ExeCreate('contrato', ['numero'=>$contrato->getNumero(),
-		'data'=>$contrato->getData(),'qtdDiarias'=>
-		$contrato->getQtdDiarias(),'valor'=>$contrato->getValor()]);
-            if(is_numeric($create->getResult())){
+	        $create->ExeCreate('contrato', ['numero'=>$contrato->getNumero(),
+		        'data'=>$contrato->getData(),'qtdDiarias'=>
+		        $contrato->getQtdDiarias(),'valor'=>$contrato->getValor()]);
+            if(is_numeric($create->getResult())) {
                 $contrato->setId($create->getResult());
                 return $contrato;
             } else {
@@ -87,6 +84,23 @@ class ContratoDAO extends Object
         } catch (Exception $ex) {
             PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), 
                 $ex->getLine()); 
+        }
+    }
+
+    public function findByNum($numero)
+    {
+        $contrato = null;
+        $read = new Read();
+        try {
+            $read->ExeRead('contrato', 'where numero=:numero', "numero=" . 
+                $numero);
+            foreach($read->getResult() as $con) {
+                $contrato = $this->setContrato($con);
+            }
+            return $contrato;
+        } catch (Exception $ex) {
+            PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(),
+                $ex->getLine());
         }
     }
 }

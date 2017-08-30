@@ -14,11 +14,10 @@ class ComplementoDAO
     public function alterar(Complemento $complemento)
     {
         $update = new Update();
-
         try {
             $update->ExeUpdate("complemento", (array)$complemento, 'where id=:id', ':id='.$complemento->getId());
             //return $complemento;
-        } catch (Exception $ex) {  
+        } catch (Exception $ex) {
             PHPErro($ex->getCode(), $ex->getMessage(), $ex->getFile(), $ex->getLine()); 
         }
     }

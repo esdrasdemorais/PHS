@@ -1,15 +1,14 @@
 <?php
-$script = '<script type="text/javascript" src="' . $array["url"] . 
-    '/js/servico.js"></script>';
-$cabecalho = array("title"=>"Cadastro de Serviço","includes"=>$script);
+$script='';
+$cabecalho = array("title"=>"Cadastro de Cliente","includes"=>$script);
 $cabecalho = array_merge($cabecalho, $array);
 View::Load('view/cabecalho');
 View::Show($cabecalho);
 
-View::Load('view/menu_admin');
+View::Load('view/menu');
 View::Show($cabecalho);
 
-View::Load('view/servico/criar');
+View::Load('view/avaliacao/sucesso');
 View::Show($array);
 
 $rodape = array("google_analytics"=>"");        

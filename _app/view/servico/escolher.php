@@ -3,6 +3,9 @@ $cabecalho = array("title"=>"Escolha o Serviço","includes"=>"");
 $cabecalho = array_merge($cabecalho, array('url'=>$array['url']));
 View::Load('view/cabecalho');
 View::Show($cabecalho);
+
+View::Load('view/menu');
+View::Show($cabecalho);
 ?>
 <div id="selecionar">
 <?php

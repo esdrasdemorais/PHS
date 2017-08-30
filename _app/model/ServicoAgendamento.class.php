@@ -45,7 +45,8 @@ class ServicoAgendamento
     } 
 
     function getValorTotal() {
-	$this->valorTotal = 23.33 * $this->periodo;
+        $periodo = $this->qtdDiarias > 0 ? $this->qtdDiarias : $this->periodo;
+	    $this->valorTotal = 23.33 * $periodo;
         return $this->valorTotal;
     }
 
@@ -85,11 +86,11 @@ class ServicoAgendamento
     private function setValorTotal()
     {
         #$servico = $this->getServico();
-	#$this->valorTotal = $this->periodo * $servico->getValorHora();
+	    #$this->valorTotal = $this->periodo * $servico->getValorHora();
     }
 
     public function setServicoCliente($servicoCliente)
     {
-	$this->servicoCliente = $servicoCliente->getId();
+	    $this->servicoCliente = $servicoCliente->getId();
     }
 }

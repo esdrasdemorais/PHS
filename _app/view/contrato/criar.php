@@ -6,6 +6,9 @@ $cabecalho = array_merge($cabecalho, $array);
 View::Load('view/cabecalho');
 View::Show($cabecalho);
 
+View::Load('view/menu_admin');
+View::Show($cabecalho);
+
 View::Load('view/contrato/criar');
 View::Show($array);
 

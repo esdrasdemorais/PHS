@@ -23,7 +23,7 @@ class LoginController extends Controller
         $loginModelName = 'Login' . ucfirst($this->tipo);
         $this->loginModel = new $loginModelName();
         
-	if (true === SessionManagement::persist($this->tipo)) {
+	    if (true === SessionManagement::persist($this->tipo)) {
             $this->redirect($this->getBaseUrl() . $this->getRoute());
         }
     }
@@ -85,16 +85,16 @@ class LoginController extends Controller
         $loginModelName = 'Login' . ucfirst($this->getParams()['tipo']);
         $this->loginModel = new $loginModelName();
         
-	$email = Check::Email($this->getRequest()['email']);
-	$this->loginModel = $this->loginDAO->checkEmail($email);
-	if (true === $email && ($this->loginModel instanceof $loginModelName)) {
-	    $this->loginModel->setSenha($this->getRequest()['senha']);
-	    $this->loginDAO->alterar($loginModel);
-	    $msg = 'Senha salva com sucesso.';
-	    View::render('view/login/alterar', array('tipo'=>$this->tipo,
-		'email'=>$this->loginModel->getEmail(),'id'=>'','msg'=>'',
-		'senha'=>$this->loginModel->getSenha(),'url'=>
-		$this->getBaseUrl()));
+	    $email = Check::Email($this->getRequest()['email']);
+	    $this->loginModel = $this->loginDAO->checkEmail($email);
+	    if (true === $email && ($this->loginModel instanceof $loginModelName)) {
+	        $this->loginModel->setSenha($this->getRequest()['senha']);
+	        $this->loginDAO->alterar($loginModel);
+	        $msg = 'Senha salva com sucesso.';
+	        View::render('view/login/alterar', array('tipo'=>$this->tipo,
+		    'email'=>$this->loginModel->getEmail(),'id'=>'','msg'=>'',
+		    'senha'=>$this->loginModel->getSenha(),'url'=>
+		    $this->getBaseUrl()));
         } else {
             $msg = 'Email Inválido ou não Cadastrado.';
             View::render('view/login/alterar', array('tipo'=>$this->tipo,
@@ -177,9 +177,8 @@ class LoginController extends Controller
     
     public function sairAction()
     {
-        session_start();
         session_destroy();
-        //$this->loginDAO->deslogar(Session::getLogin());
-        //Session::clear();
+        $this->loginDAO->deslogar(Session::getLogin());
+        Session::clear();
     }
 }

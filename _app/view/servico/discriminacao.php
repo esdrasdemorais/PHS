@@ -5,6 +5,9 @@ $cabecalho = array("title"=>"Discriminaçao Serviço","includes"=>$script);
 $cabecalho = array_merge($cabecalho, ['url'=>$array['url']]);
 View::Load('view/cabecalho');
 View::Show($cabecalho);
+
+View::Load('view/menu');
+View::Show($cabecalho);
 ?>
 <form method="post" title="Cadastro Servico" id="cad_servico" 
     action="<?php echo($array['url']);?>/index.php/discriminacao/salvar">

@@ -3,7 +3,6 @@
     
     <input type="hidden" name="servico_cliente_id" value="#servico_cliente_id#" />
     
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
     <script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
     <script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
     <script type="text/javascript">
@@ -26,11 +25,11 @@
             placeholder="Informe o horário." class="form-control" />
     </div>
     <div class="form-group">
-        <label>Período de Horas:</label>
-        <input type="number" name="periodo" value="#periodo#" 
-            title="Informe um período de horas." class="form-control"
-            x-moz-errormessage="Período de horas" min="1" max="12" required 
-            placeholder="Informe um período em horas." />
+        <label>#labelPeriodo#</label>
+        <input type="number" name="#namePeriodo#" value="#valuePeriodo#" 
+            title="Informe um Período." class="form-control" required 
+            x-moz-errormessage="Informe um Período" min="1" max="#maxPeriodo#"
+            placeholder="Informe um Período" />
     </div>
     <div class="form-group">
         <label>Endereço:</label>
@@ -45,6 +44,5 @@
     </div>
     <input type="hidden" name="endereco_id" id="endereco_id" value="1" />
     <input type="hidden" name="geolocalizacao" id="geolocalizacao" value="" /> 
-    <br>
     <input type="submit" name="salvar" value="Salvar" class="btn btn-primary" />    
 </form>
